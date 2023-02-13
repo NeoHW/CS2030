@@ -1,14 +1,16 @@
 public class SolidSphere extends Sphere {
 
     private final double density;
+    private final SolidImpl solidImpl;
 
     SolidSphere(double radius, double density) {
         super(radius);
         this.density = density;
+        this.solidImpl = new SolidImpl(new Sphere(radius), density); 
     }
 
     public double mass() {
-        return super.volume() * this.density;
+        return this.solidImpl.mass();
     }
 
     @Override

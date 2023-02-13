@@ -1,14 +1,16 @@
-public class SolidCuboid extends Cuboid {
+public class SolidCuboid extends Cuboid implements Solid {
 
     private final double density;
+    private final SolidImpl solidImpl;
 
     SolidCuboid(double height, double width, double length, double density) {
         super(height,width,length);
         this.density = density;
+        this.solidImpl = new SolidImpl(new Cuboid(height, width, length), density);
     }
 
     public double mass() {
-        return super.volume() * this.density;
+        return this.solidImpl.mass();
     }
 
     @Override
