@@ -12,7 +12,6 @@ class Booking implements Comparable<Booking> {
         Service serviceOne = this.driver.getServices().get(0);
         Service serviceTwo = this.driver.getServices().get(1);
         // find out which service is cheaper and returns it
-
         if (this.request.computeFare(serviceOne) - this.request.computeFare(serviceTwo) < 0) {
             return serviceOne;
         } else {
