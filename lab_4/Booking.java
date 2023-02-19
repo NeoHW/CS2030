@@ -7,6 +7,14 @@ class Booking implements Comparable<Booking> {
         this.request = request;
     }
 
+    public Driver getDriver() {
+        return this.driver;
+    }
+
+    public Request getRequest() {
+        return this.request;
+    }
+
 
     public Service cheapestService() {
         Service serviceOne = this.driver.getServices().get(0);
