@@ -21,11 +21,9 @@ public class PagerACK implements Term {
         return this.transmitterIdentifier;
     }
 
-    /**
-    public Host ack() {
-        return new pagerACK(this.transmitterIdentifier, super.getIdentifier());
+    public ConnectedTransmitter ack() {
+        return new ConnectedTransmitter(this.transmitterIdentifier, this.identifier);
     }
-    */
 
     @Override
     public String toString() {

@@ -21,7 +21,7 @@ public class TransmitterRCV implements Host {
         return this.identifier.equals(other.getIdentifier());
     }
 
-    public Term rcv() {
+    public PagerACK rcv() {
         return new PagerACK(this.pagerIdentifier, this.identifier);
     }
 
