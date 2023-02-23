@@ -1,9 +1,15 @@
-public class TransmitterRCV extends Transmitter {
+public class TransmitterRCV implements Host {
+    private final String identifier;
     private final String pagerIdentifier;
 
     TransmitterRCV(String identifier, String pagerIdentifier) {
-        super(identifier);
+        this.identifier = identifier;
         this.pagerIdentifier = pagerIdentifier;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return this.identifier;
     }
 
     public String getPagerIdentifier() {
@@ -11,7 +17,16 @@ public class TransmitterRCV extends Transmitter {
     }
 
     @Override
+    public boolean equals(Host other) {
+        return this.identifier.equals(other.getIdentifier());
+    }
+
+    public Term rcv() {
+        return new PagerACK(this.pagerIdentifier, this.identifier);
+    }
+
+    @Override
     public String toString() {
-        return this.pagerIdentifier + " >--snd--> " + super.toString();
+        return this.pagerIdentifier + " >--snd--> " + this.identifier;
     }
 }

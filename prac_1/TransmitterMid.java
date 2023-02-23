@@ -1,8 +1,7 @@
-public class Pager implements Term {
-
+public class TransmitterMid implements Host {
     private final String identifier;
-    
-    Pager(String identifier) {
+
+    TransmitterMid(String identifier) {
         this.identifier = identifier;
     }
 
@@ -11,12 +10,8 @@ public class Pager implements Term {
         return this.identifier;
     }
 
-    public TransmitterRCV snd(TransmitterMid tm) {
-        return new TransmitterRCV(tm.getIdentifier(), this.getIdentifier());
-    }
-
     @Override
-    public boolean equals(Term other) {
+    public boolean equals(Host other) {
         return this.identifier.equals(other.getIdentifier());
     }
 
