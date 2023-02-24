@@ -1,10 +1,12 @@
 public class PagerACK implements Term {
     private final String identifier;
     private final String transmitterIdentifier;
+    private final ImList<String> connections;
 
-    PagerACK(String identifier, String transmitterIdentifier) {
+    PagerACK(String identifier, String transmitterIdentifier, ImList<String> connections) {
         this.identifier = identifier;
         this.transmitterIdentifier = transmitterIdentifier;
+        this.connections = connections;
     }
 
     @Override
@@ -22,7 +24,8 @@ public class PagerACK implements Term {
     }
 
     public ConnectedTransmitter ack() {
-        return new ConnectedTransmitter(this.transmitterIdentifier, this.identifier);
+        return new ConnectedTransmitter(
+            this.transmitterIdentifier, this.identifier, this.connections);
     }
 
     @Override

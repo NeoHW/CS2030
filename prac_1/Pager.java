@@ -6,13 +6,14 @@ public class Pager implements Term {
         this.identifier = identifier;
     }
 
+
     @Override
     public String getIdentifier() {
         return this.identifier;
     }
 
     public TransmitterRCV snd(TransmitterMid tm) {
-        return new TransmitterRCV(tm.getIdentifier(), this.getIdentifier());
+        return new TransmitterRCV(tm.getIdentifier(), this.identifier, tm.getConnections());
     }
 
     @Override
