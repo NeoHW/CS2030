@@ -1,7 +1,8 @@
 class P1 implements Protocol {
-
-    public Protocol next(Person person, Test test) {
-        return test.isPositive() ? new P1() : new ProtocolDischarge();
+    
+    // for High Risk Individuals
+    public Protocol next(Person person, Test test, int numOfDays) {
+        return test.isPositive() ? this : new ProtocolDischarge1();
     }
 
     @Override
