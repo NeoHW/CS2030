@@ -11,6 +11,7 @@ class RecurringTask implements MainTask {
         this.tasks = getRepeats(task, frequency, repeatNum);
     }
 
+    // static method to get ImList of tasks
     static ImList<MainTask> getRepeats(Task task, int frequency, int repeatNum) {
         ImList<MainTask> tasks = new ImList<MainTask>().add(task);
         for (int i = 1; i < repeatNum; i++) {
@@ -22,8 +23,8 @@ class RecurringTask implements MainTask {
 
     @Override
     public MainTask edit(int startTime, int endTime) {
-        Task newTask = new Task(task.getDay(), startTime, endTime, task.getDescription());
-        return new RecurringTask(newTask, frequency, repeatNum, getRepeats(task, frequency, repeatNum));
+        Task newTask = new Task(originalTask.getDay(), startTime, endTime, originalTask.getDescription());
+        return new RecurringTask(newTask, frequency, repeatNum);
     }
 
     @Override
@@ -33,8 +34,8 @@ class RecurringTask implements MainTask {
 
     // level 3 : to edit
     public MainTask edit(int index, int day, int startTime, int endTime) {
-        Task newTask = new Task(task.getDay(), startTime, endTime, task.getDescription());
-        return new RecurringTask(newTask, frequency, repeatNum, getRepeats(task, frequency, repeatNum));
+        Task newTask = new Task(originalTask.getDay(), startTime, endTime, originalTask.getDescription());
+        return new RecurringTask(newTask, frequency, repeatNum);
     }
 
     public CancelledTask cancel(int index) {
