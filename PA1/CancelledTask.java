@@ -1,7 +1,7 @@
 class CancelledTask implements Reminder {
-    private final Task task;
+    private final Reminder task;
 
-    CancelledTask(Task task) {
+    CancelledTask(Reminder task) {
         this.task = task;
     }
 
@@ -23,6 +23,7 @@ class CancelledTask implements Reminder {
 
     @Override
     public String toString() {
-        return task + "[cancelled]";
+        String[] arr = task.toString().split("\n");
+        return arr[0] + "[cancelled]";
     }
 }

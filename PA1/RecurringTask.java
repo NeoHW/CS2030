@@ -2,7 +2,7 @@ class RecurringTask implements MainTask {
     private final Task originalTask;
     private final int frequency;
     private final int repeatNum;
-    private final ImList<MainTask> tasks;
+    private final ImList<Reminder> tasks;
 
     RecurringTask(Task task, int frequency, int repeatNum) {
         this.originalTask = task;
@@ -12,8 +12,8 @@ class RecurringTask implements MainTask {
     }
 
     // static method to get ImList of tasks
-    static ImList<MainTask> getRepeats(Task task, int frequency, int repeatNum) {
-        ImList<MainTask> tasks = new ImList<MainTask>().add(task);
+    static ImList<Reminder> getRepeats(Task task, int frequency, int repeatNum) {
+        ImList<Reminder> tasks = new ImList<Reminder>().add(task);
         for (int i = 1; i < repeatNum; i++) {
             Task toAdd = new Task(task.getDay() + (i*frequency), task.getStartTime(), task.getEndTime(), task.getDescription());
             tasks = tasks.add(toAdd);
@@ -21,15 +21,30 @@ class RecurringTask implements MainTask {
         return tasks;
     }
 
-    @Override
+    public int getDay() {
+        return originalTask.getDay();
+    }
+
+    public int getStartTime() {
+        return originalTask.getStartTime();
+    }
+
+    public int getEndTime() {
+        return originalTask.getEndTime();
+    }
+    
+    public String getDescription() {
+        return originalTask.getDescription();
+    }
+
     public MainTask edit(int startTime, int endTime) {
         Task newTask = new Task(originalTask.getDay(), startTime, endTime, originalTask.getDescription());
         return new RecurringTask(newTask, frequency, repeatNum);
     }
 
     @Override
-    public CancelledTask cancel() {
-        return new CancelledTask(this.originalTask);
+    public Reminder cancel() {
+        return new CancelledTask(this);
     }
 
     // level 3 : to edit
@@ -38,7 +53,7 @@ class RecurringTask implements MainTask {
         return new RecurringTask(newTask, frequency, repeatNum);
     }
 
-    public CancelledTask cancel(int index) {
+    public Reminder cancel(int index) {
         return new CancelledTask(this.originalTask);
     }
 

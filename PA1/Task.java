@@ -11,12 +11,10 @@ class Task implements MainTask {
         this.description = description;
     }
 
-    @Override
-    public MainTask edit(int startTime, int endTime) {
+    public Task edit(int startTime, int endTime) {
         return new Task(this.day, startTime, endTime, this.description);
     }
 
-    @Override
     public CancelledTask cancel() {
         return new CancelledTask(this);
     }
@@ -32,7 +30,7 @@ class Task implements MainTask {
     public int getEndTime() {
         return this.endTime;
     }
-    
+
     public String getDescription() {
         return this.description;
     }
