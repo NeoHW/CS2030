@@ -44,11 +44,11 @@ class RecurringTask implements MainTask {
 
     @Override
     public String toString() {
-        String output = "";
+        String output = "Recurring " + originalTask;
         for(int i = 1; i <= tasks.size(); i++) {
-            output = output + "#" + i + ":" + tasks.get(i); 
+            output = output + "\n#" + i + ":" + tasks.get(i-1); 
         }
-        return originalTask + output;
+        return output;
     }
 
 }
