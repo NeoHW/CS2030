@@ -8,4 +8,6 @@ interface Reminder {
     
     public String getDescription();
 
+    public boolean isCancelled();
+
 }

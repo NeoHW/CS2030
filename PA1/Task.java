@@ -35,6 +35,10 @@ class Task implements MainTask {
         return this.description;
     }
 
+    public boolean isCancelled() {
+        return false;
+    }
+
     @Override
     public String toString() {
         return String.format("Task: %d,%d,%d,%s", day, startTime, endTime, description);

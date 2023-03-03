@@ -11,6 +11,14 @@ class RecurringTask implements MainTask {
         this.tasks = getRepeats(task, frequency, repeatNum);
     }
 
+    RecurringTask(Task task, int frequency, int repeatNum, ImList<Reminder> tasks) {
+        this.originalTask = task;
+        this.frequency = frequency;
+        this.repeatNum = repeatNum;
+        this.tasks = tasks;
+    }
+
+
     // static method to get ImList of tasks
     static ImList<Reminder> getRepeats(Task task, int frequency, int repeatNum) {
         ImList<Reminder> tasks = new ImList<Reminder>().add(task);
@@ -37,6 +45,10 @@ class RecurringTask implements MainTask {
         return originalTask.getDescription();
     }
 
+    public boolean isCancelled() {
+        return false;
+    }
+
     public MainTask edit(int startTime, int endTime) {
         Task newTask = new Task(originalTask.getDay(), startTime, endTime, originalTask.getDescription());
         return new RecurringTask(newTask, frequency, repeatNum);
@@ -53,8 +65,10 @@ class RecurringTask implements MainTask {
         return new RecurringTask(newTask, frequency, repeatNum);
     }
 
-    public Reminder cancel(int index) {
-        return new CancelledTask(this.originalTask);
+    public RecurringTask cancel(int index) {
+        Reminder taskToChange = tasks.get(index - 1);
+        ImList<Reminder> updatedTasks = taskToChange.isCancelled() ? tasks : tasks.set(index - 1, new CancelledTask(taskToChange));
+        return new RecurringTask(originalTask, frequency, repeatNum, updatedTasks);
     }
 
     @Override

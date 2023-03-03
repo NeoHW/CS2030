@@ -21,6 +21,10 @@ class CancelledTask implements Reminder {
         return this.task.getDescription();
     }
 
+    public boolean isCancelled() {
+        return true;
+    }
+
     @Override
     public String toString() {
         String[] arr = task.toString().split("\n");
