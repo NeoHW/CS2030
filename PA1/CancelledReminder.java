@@ -1,0 +1,3 @@
+class CancelledReminder implements MainTask {
+
+}
