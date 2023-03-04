@@ -49,6 +49,7 @@ class RecurringTask implements MainTask {
         return false;
     }
 
+    @Override
     public MainTask edit(int startTime, int endTime) {
         Task newTask = new Task(originalTask.getDay(), startTime, endTime, originalTask.getDescription());
         return new RecurringTask(newTask, frequency, repeatNum);
@@ -59,15 +60,16 @@ class RecurringTask implements MainTask {
         return new CancelledTask(this);
     }
 
-    // level 3 : to edit
-    public MainTask edit(int index, int day, int startTime, int endTime) {
-        Task newTask = new Task(originalTask.getDay(), startTime, endTime, originalTask.getDescription());
-        return new RecurringTask(newTask, frequency, repeatNum);
+    // level 3
+    public RecurringTask edit(int index, int day, int startTime, int endTime) {
+        ImList<Reminder> updatedTasks = tasks.set(index - 1, new Task(day, startTime, endTime, tasks.get(index - 1).getDescription()));
+        updatedTasks = updatedTasks.sort(new TaskComp());
+        return new RecurringTask(originalTask, frequency, repeatNum, updatedTasks);
     }
 
     public RecurringTask cancel(int index) {
         Reminder taskToChange = tasks.get(index - 1);
-        ImList<Reminder> updatedTasks = taskToChange.isCancelled() ? tasks : tasks.set(index - 1, new CancelledTask(taskToChange));
+        ImList<Reminder> updatedTasks = taskToChange.isCancelled() ? tasks : tasks.set(index - 1, new CancelledReminder(taskToChange));
         return new RecurringTask(originalTask, frequency, repeatNum, updatedTasks);
     }
 

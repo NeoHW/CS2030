@@ -11,11 +11,13 @@ class Task implements MainTask {
         this.description = description;
     }
 
+    @Override
     public Task edit(int startTime, int endTime) {
         return new Task(this.day, startTime, endTime, this.description);
     }
 
-    public CancelledTask cancel() {
+    @Override
+    public Reminder cancel() {
         return new CancelledTask(this);
     }
 
