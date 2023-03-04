@@ -41,6 +41,10 @@ class Task implements MainTask {
         return false;
     }
 
+    public ImList<Reminder> getAllActiveTasks() {
+        return new ImList<Reminder>().add(this);
+    }
+
     @Override
     public String toString() {
         return String.format("Task: %d,%d,%d,%s", day, startTime, endTime, description);

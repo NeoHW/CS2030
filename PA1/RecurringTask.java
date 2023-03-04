@@ -73,6 +73,16 @@ class RecurringTask implements MainTask {
         return new RecurringTask(originalTask, frequency, repeatNum, updatedTasks);
     }
 
+    public ImList<Reminder> getAllActiveTasks() {
+        ImList<Reminder> list = new ImList<Reminder>();
+        for (Reminder task : this.tasks) {
+            if (!task.isCancelled()) {
+                list = list.add(task);
+            }
+        }
+        return list;
+    }
+
     @Override
     public String toString() {
         String output = "Recurring " + originalTask;

@@ -1,3 +1,3 @@
 interface View {
-    void view(ImList<MainTask> tasks);
+    public void view(ImList<Reminder> tasks);
 }

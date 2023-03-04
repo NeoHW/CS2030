@@ -25,6 +25,10 @@ class CancelledTask implements Reminder {
         return true;
     }
 
+    public ImList<Reminder> getAllActiveTasks() {
+        return new ImList<Reminder>();
+    }
+
     @Override
     public String toString() {
         String[] arr = task.toString().split("\n");

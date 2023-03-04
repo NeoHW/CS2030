@@ -10,4 +10,6 @@ interface Reminder {
 
     public boolean isCancelled();
 
+    public ImList<Reminder> getAllActiveTasks();
+
 }

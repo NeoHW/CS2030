@@ -33,6 +33,10 @@ class CancelledReminder implements MainTask {
         return true;
     }
 
+    public ImList<Reminder> getAllActiveTasks() {
+        return new ImList<Reminder>();
+    }
+
     @Override
     public String toString() {
         return task + "[cancelled]";
