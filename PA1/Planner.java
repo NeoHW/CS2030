@@ -1,20 +1,24 @@
 class Planner {
-    private final ImList<MainTask> tasks;
+private final ImList<Reminder> tasks;
 
     Planner() {
-        this.tasks = new ImList<MainTask>();
+        this.tasks = new ImList<Reminder>();
     }
 
-    public Planner add(MainTask task) {
+    Planner(ImList<Reminder> tasks) {
+        this.tasks = tasks;
+    }
 
+    public Planner add(Reminder task) {
+        return new Planner(tasks.add(task));
     }
 
     @Override
     public String toString() {
         String output = "";
         for(int i = 1; i <= tasks.size(); i++) {
-            output = output + "#" + i + ":" + tasks.get(i); 
+            output = output + "\n" + tasks.get(i-1); 
         }
-        return originalTask + output;
+        return output;
     }
 }
