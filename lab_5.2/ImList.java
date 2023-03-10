@@ -2,7 +2,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.function.Function;
 
 /**
  * An immutable implementation of the {@code ArrayList} using an 
@@ -20,17 +19,6 @@ public class ImList<E> implements Iterable<E> {
     public ImList() {
         this.elems = new ArrayList<E>();
     }
-
-    // Recitation added in map method
-    <R> imList<R> map(Function<? super E, ? extends R> mapper) {
-        ImList<R> newList = new ImList<R>();
-
-        for (E t: this) {
-            newList = newList.add(mapper.apply(t));
-        }
-        return newList;
-    }
-
 
     /**
      * Constructs a list containing the elements of the specified list of
