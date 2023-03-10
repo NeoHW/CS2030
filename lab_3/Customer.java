@@ -11,10 +11,6 @@ public class Customer {
         this.serviceTime = serviceTime;
     }
 
-    public double getServiceTime() {
-        return this.serviceTime.get();
-    }
-
     public int getCustomerNumber() {
         return this.customerNumber;
     }

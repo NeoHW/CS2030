@@ -49,7 +49,7 @@ class ServerList {
         return new ServerList(this.serverList.set(serverNum, currServer));
     }
 
-    // Given a customer and serverNum, add customer to respective server queue
+    // Given a customer and serverNum, remove customer from respective server queue
     public ServerList removeFromServerQueue(int serverNum, Customer customer) {
         Server currServer = this.serverList.get(serverNum);
         currServer = currServer.removeFromQueue();
