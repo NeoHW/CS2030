@@ -9,6 +9,8 @@ class ServerList {
     public int returnFirstAvailableServer() {
         // checking for idle servers (no cust)
         for (int i = 0; i < this.serverList.size(); i++) {
+            System.out.println("SERVERLIST: returnFirstAvailableServer() : running index " + i);
+            System.out.println(serverList.get(i));
             if (serverList.get(i).isIdle()) {
                 System.out.println("SERVERLIST: serverList " + i + " is idle");
                 return i;
@@ -29,6 +31,10 @@ class ServerList {
     // Returns the server at specified index
     public Server get(int index) {
         return this.serverList.get(index);
+    }
+
+    public ServerList set(int index, Server server) {
+        return new ServerList(this.serverList.set(index, server));
     }
 
     // Adds a server to the ServerList
@@ -54,9 +60,15 @@ class ServerList {
     // only used when server is Self-checkout
     public ServerList removeCustomerFromServer(Server freeServer) {
         int mainListIndex = serverList.size() - 1 ;
-        Server mainCurrServer = this.serverList.get(mainListIndex);
-        mainCurrServer = mainCurrServer.remove(freeServer);
-        return new ServerList(this.serverList.set(mainListIndex, mainCurrServer));
+        Server checkoutCluster = this.serverList.get(mainListIndex);
+
+        System.out.println("SERVERLIST : checkoutCluster before removal = " + checkoutCluster);
+
+        checkoutCluster = checkoutCluster.remove(freeServer);
+
+        System.out.println("SERVERLIST : checkoutCluster after removal = " + checkoutCluster);
+
+        return new ServerList(this.serverList.set(mainListIndex, checkoutCluster));
     }
 
     // Given a customer and serverNum, add customer to respective server queue
@@ -86,12 +98,16 @@ class ServerList {
     // For checkout cluster methods
 
     // return true if any self-checkouts is free
+    // only for self-checkouts
     public boolean checkoutsFree() {
         for (int i = 0; i < serverList.size(); i++) {
+            System.out.println("SERVERLIST: checkoutsFree(): checking index " + i);
             if (serverList.get(i).isIdle()) {
+                System.out.println("SERVERLIST: checkoutsFree(): index " + i + " is free");
                 return true;
             }
         }
+        System.out.println("SERVERLIST: checkoutsFree() : all self checkout counters not free");
         return false;
     }
 

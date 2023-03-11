@@ -30,6 +30,7 @@ class CheckoutCluster implements Server {
     // returns true if any self checkout not serving
     @Override
     public boolean isIdle() {
+        System.out.println("CHECKOUTCLUSTER: isIdle() method running");
         return (this.serverList.checkoutsFree());
     }
 
@@ -61,13 +62,18 @@ class CheckoutCluster implements Server {
 
     // need to remove the customer given a selfCheckout Server in CheckOutCluster
     @Override
-    public Server remove(Server server) {
-        int index = server.getServerNum() - numHumanServers - 1;
-        System.out.println("CHECKOUT CLUSTER: serverNum = " + serverNum);
-        System.out.println("CHECKOUT CLUSTER: index = " + index);
-        Server tempServer = this.serverList.get(index);
-        tempServer = tempServer.remove(tempServer);
-        return tempServer;
+    public CheckoutCluster remove(Server selfCheckout) {
+        int index = selfCheckout.getServerNum() - numHumanServers - 1;
+        Server tempSC = this.serverList.get(index);
+        tempSC = tempSC.remove(tempSC);
+        ServerList tempServerList = this.serverList.set(index, tempSC);
+
+        return new CheckoutCluster(
+            this.serverNum, 
+            this.maxQueueLength,
+            tempServerList,
+            this.queueList,
+            this.numHumanServers);
     }
 
     // Returns a new Server object with the added customer in queueList

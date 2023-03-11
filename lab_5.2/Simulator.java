@@ -41,6 +41,7 @@ class Simulator {
                     numServers + i,
                     new ImList<Customer>()));
             }
+            System.out.println("SIMULATOR: selfcheckout counters : " + serverListOfSC);
 
             // adding the singular SCserver into main ServerList
             tempServerList = tempServerList.add(new CheckoutCluster(
@@ -100,6 +101,7 @@ class Simulator {
             totalWaitingTime += event.getWaitingTime();
 
             
+            System.out.println("SIMULATOR: ServerList after running event = " + serverList);
             System.out.println("SIMULATOR: pq after running event = " + pq);
             System.out.println("SIMULATOR: output = " + output);
 
