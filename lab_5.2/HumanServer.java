@@ -53,7 +53,7 @@ class HumanServer implements Server {
 
     // Returns a new Server object after removing the customer in customerList
     @Override
-    public Server remove() {
+    public Server remove(Server server) {
         return new HumanServer(this.serverNum, this.customerList.remove(0),
             this.maxQueueLength, this.queueList, this.restTimes);
     }

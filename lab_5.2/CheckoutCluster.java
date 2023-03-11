@@ -3,13 +3,16 @@ class CheckoutCluster implements Server {
     private final int maxQueueLength;
     private final ServerList serverList;
     private final ImList<Customer> queueList;
+    private final int numHumanServers;
 
     // Constructor
-    CheckoutCluster(int serverNum, int qmax, ServerList serverList, ImList<Customer> queueList) {
+    CheckoutCluster(int serverNum, int qmax, ServerList serverList,
+        ImList<Customer> queueList, int numHumanServers) {
         this.serverNum = serverNum;
         this.maxQueueLength = qmax;
         this.serverList = serverList;
         this.queueList = queueList;
+        this.numHumanServers = numHumanServers;
     }
 
     // returns checkout counter index that is free
@@ -52,14 +55,19 @@ class CheckoutCluster implements Server {
             this.serverNum, 
             this.maxQueueLength,
             tempServerList,
-            this.queueList);
+            this.queueList,
+            this.numHumanServers);
     }
 
-    // wont be used
+    // need to remove the customer given a selfCheckout Server in CheckOutCluster
     @Override
-    public Server remove() {
-        return this;
-        // return null;
+    public Server remove(Server server) {
+        int index = server.getServerNum() - numHumanServers - 1;
+        System.out.println("CHECKOUT CLUSTER: serverNum = " + serverNum);
+        System.out.println("CHECKOUT CLUSTER: index = " + index);
+        Server tempServer = this.serverList.get(index);
+        tempServer = tempServer.remove(tempServer);
+        return tempServer;
     }
 
     // Returns a new Server object with the added customer in queueList
@@ -69,7 +77,8 @@ class CheckoutCluster implements Server {
             this.serverNum, 
             this.maxQueueLength,
             this.serverList,
-            this.queueList.add(customer));
+            this.queueList.add(customer),
+            this.numHumanServers);
     }
 
     // Returns a new Server object after removing the customer in queueList
@@ -79,7 +88,8 @@ class CheckoutCluster implements Server {
             this.serverNum,
             this.maxQueueLength,
             this.serverList,
-            this.queueList.remove(0));
+            this.queueList.remove(0),
+            this.numHumanServers);
     }
 
     @Override

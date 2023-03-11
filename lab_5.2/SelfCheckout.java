@@ -41,7 +41,7 @@ class SelfCheckout implements Server {
 
     // Returns a new Server object after removing the customer in customerList
     @Override
-    public Server remove() {
+    public Server remove(Server server) {
         return new SelfCheckout(this.serverNum, this.customerList.remove(0));
     }
 

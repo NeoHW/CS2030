@@ -16,7 +16,7 @@ interface Server {
     public Server add(Customer customer);
 
     // Returns a new Server object after removing the customer in customerList
-    public Server remove();
+    public Server remove(Server server);
 
     // Returns a new Server object with the added customer in queueList
     public Server addToQueue(Customer customer);

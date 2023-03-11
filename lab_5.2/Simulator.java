@@ -47,7 +47,8 @@ class Simulator {
                 numServers + 1,
                 this.maxQueueLength,
                 serverListOfSC,
-                new ImList<Customer>()));
+                new ImList<Customer>(),
+                numServers));
         }
 
         // Instantiating a ServerList object from created tempServerList

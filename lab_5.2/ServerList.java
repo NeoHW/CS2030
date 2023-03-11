@@ -46,17 +46,17 @@ class ServerList {
     // Given a server number, remove the current customer in customerList
     public ServerList removeCustomerFromServer(int serverNum) {
         Server currServer = this.serverList.get(serverNum);
-        currServer = currServer.remove();
+        currServer = currServer.remove(currServer);
         return new ServerList(this.serverList.set(serverNum, currServer));
     }
 
     // Given a server, remove the current customer in customerList
+    // only used when server is Self-checkout
     public ServerList removeCustomerFromServer(Server freeServer) {
-        int mainListIndex = freeServer.isCheckoutCluster() ?
-            serverList.size() - 1 : serverList.indexOf(freeServer);
-        Server currServer = freeServer;
-        currServer = currServer.remove();
-        return new ServerList(this.serverList.set(mainListIndex, currServer));
+        int mainListIndex = serverList.size() - 1 ;
+        Server mainCurrServer = this.serverList.get(mainListIndex);
+        mainCurrServer = mainCurrServer.remove(freeServer);
+        return new ServerList(this.serverList.set(mainListIndex, mainCurrServer));
     }
 
     // Given a customer and serverNum, add customer to respective server queue
@@ -76,6 +76,10 @@ class ServerList {
     // Returns the customer number
     public int serverOf(Customer customer) {
         return this.serverList.indexOf(customer) + 1;
+    }
+
+    public int indexOf(Server server) {
+        return this.serverList.indexOf(server);
     }
 
 
