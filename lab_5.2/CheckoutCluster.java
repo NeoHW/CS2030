@@ -17,7 +17,6 @@ class CheckoutCluster implements Server {
 
     // returns checkout counter index that is free
     public int getAvailCounter() {
-        System.out.print("CHECKOUTCLUSTER: getAvailCounter method : ");
         return this.serverList.returnFirstAvailableServer();
     }
 
@@ -30,7 +29,6 @@ class CheckoutCluster implements Server {
     // returns true if any self checkout not serving
     @Override
     public boolean isIdle() {
-        System.out.println("CHECKOUTCLUSTER: isIdle() method running");
         return (this.serverList.checkoutsFree());
     }
 

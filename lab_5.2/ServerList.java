@@ -9,22 +9,17 @@ class ServerList {
     public int returnFirstAvailableServer() {
         // checking for idle servers (no cust)
         for (int i = 0; i < this.serverList.size(); i++) {
-            System.out.println("SERVERLIST: returnFirstAvailableServer() : running index " + i);
-            System.out.println(serverList.get(i));
             if (serverList.get(i).isIdle()) {
-                System.out.println("SERVERLIST: serverList " + i + " is idle");
                 return i;
             }
         }
         // then check for 1st server with spots in queue
         for (int i = 0; i < this.serverList.size(); i++) {
             if (serverList.get(i).hasQueueSpots()) {
-                System.out.println("SERVERLIST: serverList " + i + " has queue spots");
                 return i;
             }
         }
         // else return -1
-        System.out.println("SERVERLIST: serverList has no free servers");
         return -1;
     }
 
@@ -59,15 +54,9 @@ class ServerList {
     // Given a server, remove the current customer in customerList
     // only used when server is Self-checkout
     public ServerList removeCustomerFromServer(Server freeServer) {
-        int mainListIndex = serverList.size() - 1 ;
+        int mainListIndex = serverList.size() - 1;
         Server checkoutCluster = this.serverList.get(mainListIndex);
-
-        System.out.println("SERVERLIST : checkoutCluster before removal = " + checkoutCluster);
-
         checkoutCluster = checkoutCluster.remove(freeServer);
-
-        System.out.println("SERVERLIST : checkoutCluster after removal = " + checkoutCluster);
-
         return new ServerList(this.serverList.set(mainListIndex, checkoutCluster));
     }
 
@@ -101,13 +90,10 @@ class ServerList {
     // only for self-checkouts
     public boolean checkoutsFree() {
         for (int i = 0; i < serverList.size(); i++) {
-            System.out.println("SERVERLIST: checkoutsFree(): checking index " + i);
             if (serverList.get(i).isIdle()) {
-                System.out.println("SERVERLIST: checkoutsFree(): index " + i + " is free");
                 return true;
             }
         }
-        System.out.println("SERVERLIST: checkoutsFree() : all self checkout counters not free");
         return false;
     }
 

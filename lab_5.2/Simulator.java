@@ -41,7 +41,6 @@ class Simulator {
                     numServers + i,
                     new ImList<Customer>()));
             }
-            System.out.println("SIMULATOR: selfcheckout counters : " + serverListOfSC);
 
             // adding the singular SCserver into main ServerList
             tempServerList = tempServerList.add(new CheckoutCluster(
@@ -70,8 +69,6 @@ class Simulator {
             Event event = pairFromPQ.first();
             pq = pairFromPQ.second();
 
-            System.out.println("SIMULATOR: event polled = " + event);
-
             // run event using given serverList
             Pair<ImList<Event>, ServerList> pairFromEvent = event.run(serverList, pq);
             ImList<Event> nextEventList = pairFromEvent.first();
@@ -99,12 +96,6 @@ class Simulator {
 
             // add waiting time to total waiting time
             totalWaitingTime += event.getWaitingTime();
-
-            
-            System.out.println("SIMULATOR: ServerList after running event = " + serverList);
-            System.out.println("SIMULATOR: pq after running event = " + pq);
-            System.out.println("SIMULATOR: output = " + output);
-
         }
         
         // if 0 customer served, returns 0 to avoid NaN
