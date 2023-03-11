@@ -7,20 +7,33 @@ class Arrival extends Event {
     @Override
     public Pair<ImList<Event>, ServerList> run(ServerList serverList, PQ<Event> pq) {
         // get available Server number 
-        int availableServer = serverList.returnFirstAvailableServer();
+        int availableServerNum = serverList.returnFirstAvailableServer();
         
-        if (availableServer >= 0) {
-            Server currServer = serverList.get(availableServer);
+        if (availableServerNum >= 0) {
+            Server currServer = serverList.get(availableServerNum);
+
+            // get self-checkout free server if it happens to be checkout cluster
+            if (currServer.isCheckoutCluster()) {
+                Server freeServer = currServer.getFreeServer();
+                return new Pair<ImList<Event>, ServerList>(
+                    new ImList<Event>().add(
+                        new ServiceBegin(time, customer, availableServerNum, freeServer, 0)),
+                        serverList);
+            }
+
+            // original code for human servers
             // add a ServiceBegin event if server is not serving & has no queue
             if (currServer.isIdle()) {
                 return new Pair<ImList<Event>, ServerList>(
-                    new ImList<Event>().add(new ServiceBegin(time, customer, availableServer, 0)),
+                    new ImList<Event>().add(
+                        new ServiceBegin(time, customer, availableServerNum, currServer, 0)),
                         serverList);
             } else {
                 // add a Wait event and add customer to sever's queue
-                serverList = serverList.addToServerQueue(availableServer, customer);
+                serverList = serverList.addToServerQueue(availableServerNum, customer);
                 return new Pair<ImList<Event>, ServerList>(
-                    new ImList<Event>().add(new Wait(time, time, customer, availableServer, true)),
+                    new ImList<Event>().add(
+                        new Wait(time, time, customer, availableServerNum, true)),
                         serverList);
             }
         } else {

@@ -1,10 +1,11 @@
 class Service extends Event {
-    
     private final int serverNum;
+    private final Server freeServer;
 
-    Service(double time, Customer customer, int serverNum) {
+    Service(double time, Customer customer, int serverNum, Server freeServer) {
         super(time, customer);
         this.serverNum = serverNum;
+        this.freeServer = freeServer;
     }
 
     @Override
@@ -15,8 +16,8 @@ class Service extends Event {
         // add a Done event to the prio queue
         return new Pair<ImList<Event>, ServerList>(
             new ImList<Event>().add(
-                new Done(this.time + this.customer.getLengthOfStay(), this.customer,
-                this.serverNum)), serverList);
+                new Done(time + customer.getLengthOfStay(), customer, serverNum, freeServer)),
+                serverList);
     }
 
     @Override

@@ -1,18 +1,20 @@
 class ServiceBegin extends Event {
-    
     private final int serverNum;
+    private final Server freeServer;
     private final double totalWaitingTime;
 
-    ServiceBegin(double time, Customer customer, int serverNum, double totalWaitingTime) {
+    ServiceBegin(double time, Customer customer, int serverNum, Server freeServer,
+        double totalWaitingTime) {
         super(time, customer);
         this.serverNum = serverNum;
+        this.freeServer = freeServer;
         this.totalWaitingTime = totalWaitingTime;
     }
 
     @Override
     // Links to service event
     public Pair<ImList<Event>, ServerList> run(ServerList serverList, PQ<Event> pq) {
-        Service nextEvent = new Service(time, customer, serverNum);
+        Service nextEvent = new Service(time, customer, serverNum, freeServer);
         return new Pair<ImList<Event>, ServerList>(
             new ImList<Event>().add(nextEvent), serverList);
     }
@@ -43,9 +45,9 @@ class ServiceBegin extends Event {
     @Override
     // returns ServiceBegin string : e.g. 0.600 2 serves by 2
     public String toString() {
-        return String.format("%s %s serves by %d\n",
+        return String.format("%s %s serves by %s\n",
             super.toString(),
             this.customer.toString(),
-            (this.serverNum + 1));
+            this.freeServer);
     }
 }

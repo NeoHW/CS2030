@@ -1,10 +1,11 @@
 class Done extends Event {
-    
     private final int serverNum;
+    private final Server freeServer;
 
-    Done(double time, Customer customer, int serverNum) {
+    Done(double time, Customer customer, int serverNum, Server freeServer) {
         super(time, customer);
         this.serverNum = serverNum;
+        this.freeServer = freeServer;
     }
 
     @Override
@@ -13,7 +14,7 @@ class Done extends Event {
         return new Pair<ImList<Event>, ServerList>(
             new ImList<Event>().add(
                 new ServerRest(this.time + serverList.get(serverNum).getRestingTime(),
-                this.customer, this.serverNum)), serverList);
+                this.customer, this.serverNum, this.freeServer)), serverList);
     }
 
     @Override
@@ -42,9 +43,9 @@ class Done extends Event {
     @Override
     // returns Done string : e.g. 1.500 1 done serving by 1
     public String toString() {
-        return String.format("%s %s done serving by %d\n",
+        return String.format("%s %s done serving by %s\n",
             super.toString(),
             this.customer.toString(),
-            (this.serverNum + 1));
+            this.freeServer);
     }
 }

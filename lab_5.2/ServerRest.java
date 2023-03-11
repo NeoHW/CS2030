@@ -1,10 +1,11 @@
 class ServerRest extends Event {
-    
     private final int serverNum;
+    private final Server freeServer;
 
-    ServerRest(double time, Customer customer, int serverNum) {
+    ServerRest(double time, Customer customer, int serverNum, Server freeServer) {
         super(time, customer);
         this.serverNum = serverNum;
+        this.freeServer = freeServer;
     }
 
     @Override
@@ -13,6 +14,15 @@ class ServerRest extends Event {
         serverList = serverList.removeCustomerFromServer(serverNum);
         return new Pair<ImList<Event>, ServerList>(new ImList<Event>(), serverList);
     }
+
+    /**
+    // @Override
+    // remove customer here after server finish resting
+    public Pair<ImList<Event>, ServerList> run(ServerList serverList, PQ<Event> pq) {
+        serverList = serverList.removeCustomerFromServer(freeServer);
+        return new Pair<ImList<Event>, ServerList>(new ImList<Event>(), serverList);
+    }
+     */
 
     @Override
     // returns true at ServerRest Event
@@ -38,7 +48,7 @@ class ServerRest extends Event {
     }
 
     @Override
-    // returns ServerRest string : e.g. 1.500 1 finished, server 1 resting
+    // wont be used
     public String toString() {
         return String.format("%s %s finished, server %d resting\n",
             super.toString(),

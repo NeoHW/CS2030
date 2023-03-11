@@ -26,11 +26,28 @@ class Simulator {
 
         ImList<Server> tempServerList = new ImList<Server>();
         
-        // adding the max number of servers
+        // adding the max number of human servers
         for (int i = 1; i <= numServers; i++) {
             tempServerList = tempServerList.add(
-                new Server(i, new ImList<Customer>(), this.maxQueueLength,
+                new HumanServer(i, new ImList<Customer>(), this.maxQueueLength,
                     new ImList<Customer>(), this.restTimes));
+        }
+
+        if (numSelfChecks > 0) {
+            // adding the max number of self-checkout counters to a serverList in SCserver
+            ServerList serverListOfSC = new ServerList(new ImList<Server>());
+            for (int i = 0; i < numSelfChecks; i++) {
+                serverListOfSC = serverListOfSC.add(new SelfCheckout(
+                    numServers + i,
+                    new ImList<Customer>()));
+            }
+
+            // adding the singular SCserver into main ServerList
+            tempServerList = tempServerList.add(new CheckoutCluster(
+                numServers + 1,
+                this.maxQueueLength,
+                serverListOfSC,
+                new ImList<Customer>()));
         }
 
         // Instantiating a ServerList object from created tempServerList

@@ -26,13 +26,13 @@ class Wait extends Event {
 
             return new Pair<ImList<Event>, ServerList>(
                     new ImList<Event>().add(
-                        new ServiceBegin(time, customer, serverNum, totalWaitingTime)),
+                        new ServiceBegin(time, customer, serverNum, currServer, totalWaitingTime)),
                         updatedServerList);
         } else {
             Event nextEvent;
             double nextEventTime;
             int nextEventCustNum;
-            // Customer Num in wait event must be > next Event so that it would not be polled by PQ
+            // Customer Num in wait event must be > next Event so that it would not be polled by PQ 
             PQ<Event> tempPQ = pq;
             while (true) {
                 nextEvent = tempPQ.poll().first();
