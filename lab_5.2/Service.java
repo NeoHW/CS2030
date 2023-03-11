@@ -46,6 +46,6 @@ class Service extends Event {
     @Override
     // no need ouput
     public String toString() {
-        return "";
+        return "Service event";
     }
 }

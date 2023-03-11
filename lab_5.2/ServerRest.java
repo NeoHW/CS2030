@@ -11,18 +11,14 @@ class ServerRest extends Event {
     @Override
     // remove customer here after server finish resting
     public Pair<ImList<Event>, ServerList> run(ServerList serverList, PQ<Event> pq) {
-        serverList = serverList.removeCustomerFromServer(serverNum);
-        return new Pair<ImList<Event>, ServerList>(new ImList<Event>(), serverList);
+        if (freeServer.isSelfCheckout()) {
+            serverList = serverList.removeCustomerFromServer(freeServer);
+            return new Pair<ImList<Event>, ServerList>(new ImList<Event>(), serverList);
+        } else {
+            serverList = serverList.removeCustomerFromServer(serverNum);
+            return new Pair<ImList<Event>, ServerList>(new ImList<Event>(), serverList);
+        }
     }
-
-    /**
-    // @Override
-    // remove customer here after server finish resting
-    public Pair<ImList<Event>, ServerList> run(ServerList serverList, PQ<Event> pq) {
-        serverList = serverList.removeCustomerFromServer(freeServer);
-        return new Pair<ImList<Event>, ServerList>(new ImList<Event>(), serverList);
-    }
-     */
 
     @Override
     // returns true at ServerRest Event

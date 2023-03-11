@@ -74,6 +74,6 @@ class SelfCheckout implements Server {
 
     @Override
     public String toString() {
-        return "self-check" + this.serverNum;
+        return "self-check " + this.serverNum;
     }
 }

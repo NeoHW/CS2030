@@ -36,7 +36,7 @@ class Simulator {
         if (numSelfChecks > 0) {
             // adding the max number of self-checkout counters to a serverList in SCserver
             ServerList serverListOfSC = new ServerList(new ImList<Server>());
-            for (int i = 0; i < numSelfChecks; i++) {
+            for (int i = 1; i <= numSelfChecks; i++) {
                 serverListOfSC = serverListOfSC.add(new SelfCheckout(
                     numServers + i,
                     new ImList<Customer>()));
@@ -68,6 +68,8 @@ class Simulator {
             Event event = pairFromPQ.first();
             pq = pairFromPQ.second();
 
+            System.out.println("SIMULATOR: event polled = " + event);
+
             // run event using given serverList
             Pair<ImList<Event>, ServerList> pairFromEvent = event.run(serverList, pq);
             ImList<Event> nextEventList = pairFromEvent.first();
@@ -95,6 +97,11 @@ class Simulator {
 
             // add waiting time to total waiting time
             totalWaitingTime += event.getWaitingTime();
+
+            
+            System.out.println("SIMULATOR: pq after running event = " + pq);
+            System.out.println("SIMULATOR: output = " + output);
+
         }
         
         // if 0 customer served, returns 0 to avoid NaN

@@ -10,16 +10,19 @@ class ServerList {
         // checking for idle servers (no cust)
         for (int i = 0; i < this.serverList.size(); i++) {
             if (serverList.get(i).isIdle()) {
+                System.out.println("SERVERLIST: serverList " + i + " is idle");
                 return i;
             }
         }
         // then check for 1st server with spots in queue
         for (int i = 0; i < this.serverList.size(); i++) {
             if (serverList.get(i).hasQueueSpots()) {
+                System.out.println("SERVERLIST: serverList " + i + " has queue spots");
                 return i;
             }
         }
         // else return -1
+        System.out.println("SERVERLIST: serverList has no free servers");
         return -1;
     }
 
@@ -92,7 +95,8 @@ class ServerList {
     public String toString() {
         String output = "";
         for (int i = 0; i < this.serverList.size(); i++) {
-            output = output + serverList.get(i);
+            Server server = serverList.get(i);
+            output = output + server;
         }
         return output;
     }

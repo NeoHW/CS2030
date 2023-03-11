@@ -14,6 +14,7 @@ class CheckoutCluster implements Server {
 
     // returns checkout counter index that is free
     public int getAvailCounter() {
+        System.out.print("CHECKOUTCLUSTER: getAvailCounter method : ");
         return this.serverList.returnFirstAvailableServer();
     }
 
@@ -99,6 +100,8 @@ class CheckoutCluster implements Server {
 
     @Override
     public String toString() {
-        return "self-check" + this.serverNum;
+        String output = "Checkout Cluster (main index) = " + this.serverNum;
+        output = output + "\n Checkout counter in clusters = " + serverList;
+        return output;
     }
 }
