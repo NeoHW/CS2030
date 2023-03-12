@@ -22,7 +22,8 @@ class Arrival extends Event {
                     serverList = serverList.addToServerQueue(availableServerNum, customer);
                     return new Pair<ImList<Event>, ServerList>(
                         new ImList<Event>().add(
-                            new Wait(time, time, customer, availableServerNum, true)),
+                            new Wait(time, time, customer, availableServerNum,
+                            true, serverList.get(availableServerNum))),
                             serverList);
                 } else {
                     // immediate add on self checkout counter
@@ -46,7 +47,8 @@ class Arrival extends Event {
                 serverList = serverList.addToServerQueue(availableServerNum, customer);
                 return new Pair<ImList<Event>, ServerList>(
                     new ImList<Event>().add(
-                        new Wait(time, time, customer, availableServerNum, true)),
+                        new Wait(time, time, customer, availableServerNum,
+                        true, serverList.get(availableServerNum))),
                         serverList);
             }
         } else {

@@ -67,11 +67,11 @@ class SelfCheckout implements Server {
         return true;
     }
 
-     // only for CheckoutCluster
-     @Override
-     public int getAvailCounter() {
-         return -1;
-     }
+    // only for CheckoutCluster
+    @Override
+    public int getAvailCounter() {
+        return -1;
+    }
 
     @Override
     public Server getFreeServer(int index) {

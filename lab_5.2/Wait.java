@@ -1,13 +1,16 @@
 class Wait extends Event {
     private final int serverNum;
+    private final Server freeServer;
     private final double waitingStartTime;
     private final boolean hasStringOutput;
 
-    Wait(double waitingStartTime, double time, Customer customer, int serverNum, boolean output) {
+    Wait(double waitingStartTime, double time, Customer customer,
+        int serverNum, boolean output, Server freeServer) {
         super(time, customer);
         this.serverNum = serverNum;
         this.waitingStartTime = waitingStartTime;
         this.hasStringOutput = output;
+        this.freeServer = freeServer;
     }
 
     @Override
@@ -24,10 +27,20 @@ class Wait extends Event {
             // BUT not add into queue (done in service event)
             updatedServerList = updatedServerList.removeFromServerQueue(serverNum, customer);
 
-            return new Pair<ImList<Event>, ServerList>(
+            if (currServer.isCheckoutCluster()) {
+                int indexFreeServer = currServer.getAvailCounter();
+                Server freeServer = currServer.getFreeServer(indexFreeServer);
+                return new Pair<ImList<Event>, ServerList>(
+                    new ImList<Event>().add(
+                        new ServiceBegin(time, customer, serverNum, freeServer, 0)),
+                        serverList);
+            } else {
+                return new Pair<ImList<Event>, ServerList>(
                     new ImList<Event>().add(
                         new ServiceBegin(time, customer, serverNum, currServer, totalWaitingTime)),
                         updatedServerList);
+            }
+            
         } else {
             Event nextEvent;
             double nextEventTime;
@@ -47,7 +60,8 @@ class Wait extends Event {
 
             return new Pair<ImList<Event>, ServerList>(
                     new ImList<Event>().add(
-                        new Wait(waitingStartTime, nextEventTime, customer, serverNum, false)),
+                        new Wait(waitingStartTime, nextEventTime,
+                        customer, serverNum, false, freeServer)),
                         serverList);
         }
     }
@@ -78,10 +92,10 @@ class Wait extends Event {
     @Override
     // returns ServiceBegin string : e.g. 0.600 2 waits at 1
     public String toString() {
-        return String.format("%s %s waits at %d\n",
+        return String.format("%s %s waits at %s\n",
             super.toString(),
             this.customer.toString(),
-            (this.serverNum + 1));
+            (this.freeServer));
     }
 
 }

@@ -114,8 +114,6 @@ class CheckoutCluster implements Server {
 
     @Override
     public String toString() {
-        String output = "Checkout Cluster (main index) = " + this.serverNum;
-        output = output + "\n Checkout counter in clusters = " + serverList;
-        return output;
+        return "self-check " + this.serverNum;
     }
 }
