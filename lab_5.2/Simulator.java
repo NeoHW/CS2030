@@ -96,7 +96,12 @@ class Simulator {
 
             // add waiting time to total waiting time
             totalWaitingTime += event.getWaitingTime();
+
+            System.out.println("SIMULATOR: pq after running event = " + pq);
+            System.out.println("SIMULATOR: output = " + output);
         }
+
+        
         
         // if 0 customer served, returns 0 to avoid NaN
         double avgWT = (numOfCustomerServed == 0) ? 0 : (totalWaitingTime / numOfCustomerServed);
