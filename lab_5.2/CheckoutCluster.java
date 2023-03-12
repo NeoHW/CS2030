@@ -105,8 +105,8 @@ class CheckoutCluster implements Server {
 
     // returns the avail checkout counter in the checkout cluster
     @Override
-    public Server getFreeServer() {
-        return this.serverList.get(this.getAvailCounter());
+    public Server getFreeServer(int index) {
+        return this.serverList.get(index);
     }
 
     @Override

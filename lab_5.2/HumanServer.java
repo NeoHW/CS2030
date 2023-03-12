@@ -80,8 +80,14 @@ class HumanServer implements Server {
         return false;
     }
 
+    // only for CheckoutCluster
     @Override
-    public Server getFreeServer() {
+    public int getAvailCounter() {
+        return -1;
+    }
+
+    @Override
+    public Server getFreeServer(int index) {
         return this;
     }
 
