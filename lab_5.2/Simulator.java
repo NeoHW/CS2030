@@ -96,9 +96,6 @@ class Simulator {
 
             // add waiting time to total waiting time
             totalWaitingTime += event.getWaitingTime();
-
-            System.out.println("SIMULATOR: pq after running event = " + pq);
-            System.out.println("SIMULATOR: output = " + output);
         }
 
         
