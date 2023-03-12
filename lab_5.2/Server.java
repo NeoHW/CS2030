@@ -24,8 +24,11 @@ interface Server {
     // Returns a new Server object after removing the customer in queueList
     public Server removeFromQueue();
 
+    // get available self checkout (for checkout Cluster)
+    public int getAvailCounter();
+
     // returns the server number (for checkout Cluster)
-    public Server getFreeServer();
+    public Server getFreeServer(int index);
 
     public boolean isCheckoutCluster();
 

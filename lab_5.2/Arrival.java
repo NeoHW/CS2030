@@ -14,11 +14,24 @@ class Arrival extends Event {
 
             // get self-checkout free server if it happens to be checkout cluster
             if (currServer.isCheckoutCluster()) {
-                Server freeServer = currServer.getFreeServer();
-                return new Pair<ImList<Event>, ServerList>(
-                    new ImList<Event>().add(
-                        new ServiceBegin(time, customer, availableServerNum, freeServer, 0)),
-                        serverList);
+                // returns -1 if no server, so need to join queue
+                int indexFreeServer = currServer.getAvailCounter();
+                
+                if (indexFreeServer == -1) {
+                    // wait event for Self Checkout Cluster
+                    serverList = serverList.addToServerQueue(availableServerNum, customer);
+                    return new Pair<ImList<Event>, ServerList>(
+                        new ImList<Event>().add(
+                            new Wait(time, time, customer, availableServerNum, true)),
+                            serverList);
+                } else {
+                    // immediate add on self checkout counter
+                    Server freeServer = currServer.getFreeServer(indexFreeServer);
+                    return new Pair<ImList<Event>, ServerList>(
+                        new ImList<Event>().add(
+                            new ServiceBegin(time, customer, availableServerNum, freeServer, 0)),
+                            serverList);
+                }
             }
 
             // original code for human servers
