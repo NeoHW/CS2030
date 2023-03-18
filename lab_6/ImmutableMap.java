@@ -23,6 +23,7 @@ class ImmutableMap<K,V> implements Iterable<Map.Entry<K,V>> {
         return this.map.keySet();
     }
 
+    // returns all the values in each key-value pair
     Collection<V> values() {
         return this.map.values();
     }

@@ -1,15 +1,15 @@
 class Assessment implements Keyable {
-    private final String test;
+    private final String name;
     private final String grade;
 
-    Assessment(String test, String grade) {
-        this.test = test;
+    Assessment(String name, String grade) {
+        this.name = name;
         this.grade = grade;
     }
 
     @Override
     public String getKey() {
-        return this.test;
+        return this.name;
     }
 
     public String getGrade() {
@@ -18,6 +18,6 @@ class Assessment implements Keyable {
 
     @Override
     public String toString() {
-        return String.format("{%s: %s}", this.test, this.grade);
+        return String.format("{%s: %s}", this.name, this.grade);
     }
 }
