@@ -1,45 +1,21 @@
-import java.util.Optional;
-import java.util.Map;
-
-class Module implements Keyable {
-    private final String moduleName;
-    private final ImmutableMap<String, Assessment> map;
+class Module extends KeyableMap<Assessment> {
 
     Module(String moduleName) {
-        this.moduleName = moduleName;
-        this.map = new ImmutableMap<String, Assessment>();
+        super(moduleName);
     }
 
     Module(String moduleName, ImmutableMap<String, Assessment> map) {
-        this.moduleName = moduleName;
-        this.map = map;
+        super(moduleName, map);
+    }
+
+    // must override put method ,, why?
+    @Override
+    public Module put(Assessment assessment) {
+        return new Module(this.getKey(), super.getMap().put(assessment.getKey(), assessment));
     }
 
     @Override
     public String getKey() {
-        return this.moduleName;
-    }
-
-    public Module put(Assessment assessment) {
-        return new Module(this.moduleName, this.map.put(assessment.getKey(), assessment));
-    }
-    
-    public Optional<Assessment> get(String key) {
-        return this.map.get(key);
-    }
-    
-    @Override
-    public String toString() {
-        String output = this.moduleName + ": {";
-        boolean haveMap = false;
-        for (Map.Entry<String,Assessment> e : map) {
-            output = output + e.getValue() + ", ";
-            haveMap = true;
-        }
-        if (haveMap) {
-            output = output.substring(0, output.length() - 2);
-        }
-        output = output + "}";
-        return output;
+        return super.getKey();
     }
 }
