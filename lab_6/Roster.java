@@ -35,27 +35,14 @@ public class Roster extends KeyableMap<Student> {
     Roster add(String stuID, String moduleCode, String assessTitle, String grade) {
         
         Optional<Student> optionalStudent = super.getMap().get(stuID);
-        // if no such student exists
-        if (optionalStudent.isEmpty()) {
-            return new Roster(this.getKey(),
-                super.getMap().put(stuID,
-                    new Student(stuID, new ImmutableMap<String, Module>().put(stuID,
-                    new Module(moduleCode, new ImmutableMap<String,Assessment>().put(moduleCode,
-                    new Assessment(assessTitle, grade)))))));
-        }
-
-        // now we know there is a student
-        Student student = optionalStudent.get();
+        Student student = optionalStudent.orElse(new Student(stuID));
         
         Optional<Module> optionalModule = student.getMap().get(moduleCode);
-        Module module = optionalModule.orElse(
-            new Module(moduleCode, new ImmutableMap<String,Assessment>()));
+        Module module = optionalModule.orElse(new Module(moduleCode));
 
-        return new Roster(this.getKey(),
-        super.getMap().put(stuID,
-            student.put(
-            module.put(
-            new Assessment(assessTitle, grade)))));
+        module = module.put(new Assessment(assessTitle, grade));
+        student = student.put(module);
 
+        return this.put(student);
     }
 }
