@@ -2,12 +2,12 @@ import java.util.Optional;
 
 public class Roster extends KeyableMap<Student> {
     
-    Roster(String RosterName) {
-        super(RosterName);
+    Roster(String rosterName) {
+        super(rosterName);
     }
 
-    Roster(String RosterName, ImmutableMap<String, Student> map) {
-        super(RosterName, map);
+    Roster(String rosterName, ImmutableMap<String, Student> map) {
+        super(rosterName, map);
     }
 
     @Override
@@ -20,11 +20,11 @@ public class Roster extends KeyableMap<Student> {
         return super.getKey();
     }
 
-    public String getGrade(String stuID, String moduleCode, String assessTitle) {
-        Optional<String> optionalOutput = super.get(stuID).
-            flatMap(x -> x.get(moduleCode)).
-            flatMap(x -> x.get(assessTitle)).
-            map(x -> x.getGrade());
+    String getGrade(String stuID, String moduleCode, String assessTitle) {
+        Optional<String> optionalOutput = super.get(stuID)
+            .flatMap(x -> x.get(moduleCode))
+            .flatMap(x -> x.get(assessTitle))
+            .map(x -> x.getGrade());
 
         String output = String.format("No such record: %s %s %s", stuID, moduleCode, assessTitle);
         return optionalOutput.orElse(output);
