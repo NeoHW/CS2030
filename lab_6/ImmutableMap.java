@@ -12,6 +12,7 @@ class ImmutableMap<K,V> implements Iterable<Map.Entry<K,V>> {
         this.map = new LinkedHashMap<K,V>();
     }
 
+    // old value is replaced by new value
     ImmutableMap<K,V> put(K key, V value) {
         ImmutableMap<K,V> newMap = new ImmutableMap<K,V>();
         newMap.map.putAll(this.map);       
