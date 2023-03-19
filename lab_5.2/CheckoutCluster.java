@@ -16,6 +16,7 @@ class CheckoutCluster implements Server {
     }
 
     // returns checkout counter index that is free
+    @Override
     public int getAvailCounter() {
         return this.serverList.returnFirstAvailableServer();
     }
@@ -110,6 +111,11 @@ class CheckoutCluster implements Server {
     @Override
     public boolean isSelfCheckout() {
         return true;
+    }
+
+    // for debugging purposes
+    public void printQueueList() {
+        System.out.println(queueList);
     }
 
     @Override

@@ -33,4 +33,7 @@ interface Server {
     public boolean isCheckoutCluster();
 
     public boolean isSelfCheckout();
+
+    // debugging purposes
+    public void printQueueList();
 }

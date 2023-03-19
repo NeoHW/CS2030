@@ -19,6 +19,10 @@ class Wait extends Event {
         ServerList updatedServerList = serverList;
         Server currServer = serverList.get(this.serverNum);
         if (currServer.isIdle()) {
+
+            System.out.print("WAIT EVENT: serverlist self checkout queue (before): ");
+            serverList.get(0).printQueueList();
+
             // calculate total waiting time till now
             double totalWaitingTime = time - waitingStartTime;
 
@@ -26,14 +30,19 @@ class Wait extends Event {
             // BUT not add into queue (done in service event)
             updatedServerList = updatedServerList.removeFromServerQueue(serverNum, customer);
 
+            System.out.print("WAIT EVENT: serverlist self checkout queue (after): ");
+            updatedServerList.get(0).printQueueList();
+
             if (currServer.isCheckoutCluster()) {
+                // for Checkout Cluster
                 int indexFreeServer = currServer.getAvailCounter();
                 Server freeServer = currServer.getFreeServer(indexFreeServer);
                 return new Pair<ImList<Event>, ServerList>(
                     new ImList<Event>().add(
                         new ServiceBegin(time, customer, serverNum, freeServer, totalWaitingTime)),
-                        serverList);
+                        updatedServerList);
             } else {
+                // for Human Server
                 return new Pair<ImList<Event>, ServerList>(
                     new ImList<Event>().add(
                         new ServiceBegin(time, customer, serverNum, currServer, totalWaitingTime)),
