@@ -96,11 +96,6 @@ class HumanServer implements Server {
         return false;
     }
 
-    // for debugging purposes
-    public void printQueueList() {
-        System.out.println(queueList);
-    }
-
     @Override
     public String toString() {
         return "" + this.serverNum;

@@ -78,11 +78,6 @@ class SelfCheckout implements Server {
         return this;
     }
 
-    // for debugging purposes
-    public void printQueueList() {
-        return;
-    }
-
     @Override
     public String toString() {
         return "self-check " + this.serverNum;

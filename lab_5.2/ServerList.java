@@ -70,15 +70,7 @@ class ServerList {
     // Given a customer and serverNum, remove customer from respective server queue
     public ServerList removeFromServerQueue(int serverNum, Customer customer) {
         Server currServer = this.serverList.get(serverNum);
-
-        System.out.print("SERVERLIST: self checkout queue (before): ");
-        currServer.printQueueList();
-
         currServer = currServer.removeFromQueue();
-
-        System.out.print("SERVERLIST: self checkout queue (after): ");
-        currServer.printQueueList();
-
         return new ServerList(this.serverList.set(serverNum, currServer));
     }
 

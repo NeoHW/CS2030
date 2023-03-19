@@ -20,18 +20,12 @@ class Wait extends Event {
         Server currServer = serverList.get(this.serverNum);
         if (currServer.isIdle()) {
 
-            System.out.print("WAIT EVENT: serverlist self checkout queue (before): ");
-            serverList.get(0).printQueueList();
-
             // calculate total waiting time till now
             double totalWaitingTime = time - waitingStartTime;
 
             // remove customer from server's Queue
             // BUT not add into queue (done in service event)
             updatedServerList = updatedServerList.removeFromServerQueue(serverNum, customer);
-
-            System.out.print("WAIT EVENT: serverlist self checkout queue (after): ");
-            updatedServerList.get(0).printQueueList();
 
             if (currServer.isCheckoutCluster()) {
                 // for Checkout Cluster
