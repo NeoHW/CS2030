@@ -1,5 +1,6 @@
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Consumer;
 
 class Maybe<T> {
     private final T value;
@@ -50,12 +51,27 @@ class Maybe<T> {
         return false;
     }
 
-    //level 2 
+    // level 2 
     public Maybe<T> filter(Predicate<? super T> p) {
         if (this.isEmpty() || p.test(this.value) ==  false) {
             return Maybe.<T>empty();
         } else {
             return this;
+        }
+    }
+
+    // level 3
+    public void ifPresent(Consumer<? super T> c) {
+        if (this.isPresent()) {
+            c.accept(this.value);
+        }
+    }
+
+    public void ifPresentOrElse(Consumer<? super T> c, Runnable r) {
+        if (this.isPresent()) {
+            c.accept(this.value);
+        } else {
+            r.run();
         }
     }
 
