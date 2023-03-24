@@ -1,6 +1,7 @@
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 class Maybe<T> {
     private final T value;
@@ -72,6 +73,33 @@ class Maybe<T> {
             c.accept(this.value);
         } else {
             r.run();
+        }
+    }
+
+    // level 4
+    public T orElse(T other) {
+        if (this.isPresent()) {
+            return this.value;
+        } else {
+            return other;
+        }
+    }
+
+    public T orElseGet(Supplier<? extends T> s) {
+        if (this.isPresent()) {
+            return this.value;
+        } else {
+            return s.get();
+        }
+    }
+
+    // why must it have <? extends Maybe<...>> 
+    // why would this make Maybe<Integer> a subtype of Maybe<Object> 
+    public Maybe<? extends T> or(Supplier<? extends Maybe<? extends T>> s) {
+        if (this.isPresent()) {
+            return this;
+        } else {
+            return s.get();
         }
     }
 
