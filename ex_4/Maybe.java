@@ -1,4 +1,5 @@
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 class Maybe<T> {
     private final T value;
@@ -32,6 +33,29 @@ class Maybe<T> {
             return Maybe.<R>empty();
         } else {
             return Maybe.<R>of(mapper.apply(this.value));
+        }
+    }
+
+    // level 1
+    public <U> boolean equals(Maybe<U> other) {
+        if (!(other instanceof Maybe)) { 
+            return false;
+        }
+        if ((this.isEmpty() && other.isEmpty())) {
+            return true;
+        }
+        if ((this.isPresent() && other.isPresent()) && this.value.equals(other.get())) {
+            return true;
+        }
+        return false;
+    }
+
+    //level 2 
+    public Maybe<T> filter(Predicate<? super T> p) {
+        if (this.isEmpty() || p.test(this.value) ==  false) {
+            return Maybe.<T>empty();
+        } else {
+            return this;
         }
     }
 
