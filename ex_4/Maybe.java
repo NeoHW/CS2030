@@ -39,7 +39,7 @@ class Maybe<T> {
     }
 
     // level 1
-    public <U> boolean equals(Maybe<U> other) {
+    <U> boolean equals(Maybe<U> other) {
         if (!(other instanceof Maybe)) { 
             return false;
         }
@@ -53,7 +53,7 @@ class Maybe<T> {
     }
 
     // level 2 
-    public Maybe<T> filter(Predicate<? super T> p) {
+    Maybe<T> filter(Predicate<? super T> p) {
         if (this.isEmpty() || p.test(this.value) ==  false) {
             return Maybe.<T>empty();
         } else {
@@ -62,13 +62,13 @@ class Maybe<T> {
     }
 
     // level 3
-    public void ifPresent(Consumer<? super T> c) {
+    void ifPresent(Consumer<? super T> c) {
         if (this.isPresent()) {
             c.accept(this.value);
         }
     }
 
-    public void ifPresentOrElse(Consumer<? super T> c, Runnable r) {
+    void ifPresentOrElse(Consumer<? super T> c, Runnable r) {
         if (this.isPresent()) {
             c.accept(this.value);
         } else {
@@ -77,7 +77,7 @@ class Maybe<T> {
     }
 
     // level 4
-    public T orElse(T other) {
+    T orElse(T other) {
         if (this.isPresent()) {
             return this.value;
         } else {
@@ -85,7 +85,7 @@ class Maybe<T> {
         }
     }
 
-    public T orElseGet(Supplier<? extends T> s) {
+    T orElseGet(Supplier<? extends T> s) {
         if (this.isPresent()) {
             return this.value;
         } else {
@@ -95,13 +95,27 @@ class Maybe<T> {
 
     // why must it have <? extends Maybe<...>> 
     // why would this make Maybe<Integer> a subtype of Maybe<Object> 
-    public Maybe<? extends T> or(Supplier<? extends Maybe<? extends T>> s) {
+    Maybe<T> or(Supplier<? extends Maybe<? extends T>> s) {
         if (this.isPresent()) {
             return this;
         } else {
-            return s.get();
+            Maybe<? extends T> temp = s.get();
+            return Maybe.<T>of(temp.get());
         }
     }
+
+    // level 5
+    <R> Maybe<R> flatMap(Function<? super T, ? extends Maybe<? extends R>> mapper) {
+        if (this.isEmpty()) {
+            return Maybe.<R>empty();
+        } else {
+            // return Maybe.<R>of(mapper.apply(this.value).get());
+            // why is ^above not acceptable?
+            Maybe<? extends R> temp = mapper.apply(this.value);
+            return Maybe.<R>of(temp.get());
+        }
+    }
+
 
     @Override
     public String toString() {
