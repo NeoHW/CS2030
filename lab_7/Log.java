@@ -1,28 +1,30 @@
 import java.util.Optional;
+import java.lang.IllegalArgumentException;
 
 class Log<T> {
-    private final Optional<T> value;
+    private final T value;
     private final Optional<String> log;
 
-    private Log(Optional<T> value, Optional<String> log) {
+    private Log(T value, Optional<String> log) {
         this.value = value;
         this.log = log;
     }
     
     static <T> Log<T> of(T t) {
-        return Log.of(t, null);
+        return Log.of(t, "");
     }
 
     static <T> Log<T> of(T value, String log) {
-        return new Log<T>(Optional.<T>ofNullable(value), Optional.<String>ofNullable(log));
+        return Optional.ofNullable(log)
+            .flatMap(l -> Optional.ofNullable(value)
+                .filter(x -> !(x instanceof Log))
+                .map(x -> new Log<T>(x, Optional.ofNullable(l)))
+            )
+            .orElseThrow(() -> new IllegalArgumentException("Invalid arguments"));
     }
 
     @Override
     public String toString() {
-        if (log.isEmpty()) {
-            return String.format("Log[%s]", this.value.get());
-        } else {
-            return String.format("Log[%s]\n%s", this.value.get(), this.log.get());
-        }
+        return log.map(l -> "Log[" + value + "]\n" + l).orElse("Log[" + value + "]");
     }
 }
