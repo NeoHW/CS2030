@@ -1,4 +1,5 @@
 import java.util.Optional;
+import java.util.function.Function;
 import java.lang.IllegalArgumentException;
 
 class Log<T> {
@@ -22,6 +23,15 @@ class Log<T> {
             )
             .orElseThrow(() -> new IllegalArgumentException("Invalid arguments"));
     }
+
+    // level 2
+    <R> Log<R> map(Function<? super T, ? extends R> mapper) {
+        return new Log<R>(mapper.apply(value), log);
+    }
+
+    // level 3
+    // flatMap would flattens all the logs into one log?
+    // <R> Log<R> flatMap(Function <? super T, 
 
     @Override
     public String toString() {
