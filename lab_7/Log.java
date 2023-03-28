@@ -51,6 +51,20 @@ class Log<T> {
         }
     }
 
+    // level 4
+    @Override
+    public boolean equals(Object obj) { 
+        if (this == obj) {
+            return true;
+        } else if (obj instanceof Log<?> other) {
+            // note: use .equals() even for T , as int can use .equals for int also
+            return (this.getValue().equals(other.getValue())) &&
+                (this.getLog().equals(other.getLog()));
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public String toString() {
         /**
