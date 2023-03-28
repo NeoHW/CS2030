@@ -24,17 +24,40 @@ class Log<T> {
             .orElseThrow(() -> new IllegalArgumentException("Invalid arguments"));
     }
 
+    T getValue() {
+        return this.value;
+    }
+
+    String getLog() {
+        return this.log.orElse("");
+    }
+
+
     // level 2
     <R> Log<R> map(Function<? super T, ? extends R> mapper) {
         return new Log<R>(mapper.apply(value), log);
     }
 
     // level 3
-    // flatMap would flattens all the logs into one log?
-    // <R> Log<R> flatMap(Function <? super T, 
+    // cannot use.get()
+    <R> Log<R> flatMap(Function<? super T, ? extends Log<? extends R>> mapper) {
+        Log<? extends R> temp = mapper.apply(this.value);
+        if (this.getLog().equals("")) {
+            return Log.of(temp.getValue(), temp.getLog());
+        } else if (temp.getLog().equals("")) {
+            return Log.of(temp.getValue(), this.getLog());
+        } else {
+            return Log.of(temp.getValue(), this.getLog() + "\n" + temp.getLog());
+        }
+    }
 
     @Override
     public String toString() {
-        return log.map(l -> "Log[" + value + "]\n" + l).orElse("Log[" + value + "]");
+        /**
+        return (this.log.equals("")) 
+            ? this.log.map(l -> "Log[" + value + "]").orElse("") 
+            : this.log.map(l -> "Log[" + value + "]\n" + l).orElse("");
+        **/
+        return log.map(l -> "Log[" + value + "]\n" + l).orElse("log[" + value + "]");
     }
 }
