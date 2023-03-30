@@ -1,3 +1,4 @@
+import java.util.stream.Stream;
 import java.util.stream.IntStream;
 
 class Main {
@@ -14,5 +15,8 @@ class Main {
     }
 
     // task 2
-    
+    static String reverse(String str) {
+        return Stream.<String>of(str.split(""))
+            .reduce("", (x, y) -> y + x);
+    }
 }
