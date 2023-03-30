@@ -40,7 +40,7 @@ class Lazy<T> implements Supplier<T> {
         return Lazy.<R>of(() -> mapper.apply(this.get()).get());
     }
 
-    // equals mwethod
+    // equals method
     @Override
     public boolean equals(Object obj) { 
         if (this == obj) {
