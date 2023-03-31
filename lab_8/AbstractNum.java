@@ -33,6 +33,7 @@ class AbstractNum<T> {
         }
     }
 
+    // isValid() checks if Optional<T> opt contains a value or not!!
     protected boolean isValid() {
         return this.opt.map(x -> true).orElse(false);
     }

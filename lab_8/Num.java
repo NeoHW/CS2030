@@ -39,6 +39,9 @@ class Num extends AbstractNum<Integer> {
     }
 
     Num add(Num other) {
+        if (!(this.isValid() && other.isValid())) {
+            return new Num(Optional.<Integer>empty());
+        }
         Num initial = Num.zero();
         Num ans = this;
         while (!initial.equals(other)) {
