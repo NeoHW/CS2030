@@ -70,11 +70,12 @@ class Num extends AbstractNum<Integer> {
         return ans;
     }
 
-    // m.sub(n) = (-n).add(m); negate n (without invalidating it)m then add m to it
-    /**
+    // m.sub(n) = (-n).add(m); negate n (without invalidating it) then add m to it
     Num sub(Num other) {
-
+        Num initial = new Num(other.opt.map(x -> n.apply(x)));
+        initial = initial.add(this);
+        // filter so that if opt contains <0 , then it becomes empty -> NaN
+        return new Num(initial.opt.filter(x -> valid.test(x)));
     }
-    */
 
 }
