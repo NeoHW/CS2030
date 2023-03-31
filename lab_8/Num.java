@@ -1,4 +1,6 @@
 import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 class Num extends AbstractNum<Integer> {
     
@@ -34,6 +36,16 @@ class Num extends AbstractNum<Integer> {
 
     Num succ() {
         return new Num(this.opt.map(x -> s.apply(x)));
+    }
+
+    Num add(Num other) {
+        Num initial = Num.zero();
+        Num ans = this;
+        while (!initial.equals(other)) {
+            ans = ans.succ();
+            initial = initial.succ();
+        }
+        return ans;
     }
 
 }
