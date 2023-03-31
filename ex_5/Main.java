@@ -1,5 +1,6 @@
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
+import java.util.List;
 
 class Main {
 
@@ -19,4 +20,15 @@ class Main {
         return Stream.<String>of(str.split(""))
             .reduce("", (x, y) -> y + x);
     }
+
+    // task 3
+    static long countRepeats(List<Integer> list) {
+        return list.stream()
+            .filter((x,y) -> x == y)
+            .distinct()
+            .peek(e -> System.out.println(e))
+            .count();
+    }
+
+
 }
