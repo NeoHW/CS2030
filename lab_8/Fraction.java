@@ -61,7 +61,13 @@ class Fraction extends AbstractNum<Frac> {
         Optional<Num> optNumerator = optAD.flatMap(x -> optBC.map(y -> x.sub(y)));
         Optional<Num> optDenom = optB.flatMap(x -> optD.map(y -> x.mul(y)));
 
-        Fraction ans =  new Fraction(optNumerator.flatMap(x -> optDenom.map(
-                    y -> Frac.of(x, y))));
+        return new Fraction(optNumerator.flatMap(x -> optDenom.flatMap(
+            y -> {
+                if (x.isValid() && y.isValid()) {
+                    return Optional.of(Frac.of(x,y));
+                } else {
+                    return Optional.<Frac>empty();
+                }
+            })));
     }
 }
