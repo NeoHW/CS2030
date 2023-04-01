@@ -32,6 +32,7 @@ class Fraction extends AbstractNum<Frac> {
         if (!(this.isValid() && other.isValid())) {
             return new Fraction(Optional.<Frac>empty());
         }
+        
         Optional<Num> optA = this.opt.map(x -> x.first());
         Optional<Num> optB = this.opt.map(x -> x.second());
         Optional<Num> optC = other.opt.map(x -> x.first());
@@ -42,6 +43,25 @@ class Fraction extends AbstractNum<Frac> {
         Optional<Num> optNumerator = optAD.flatMap(x -> optBC.map(y -> x.add(y)));
         Optional<Num> optDenom = optB.flatMap(x -> optD.map(y -> x.mul(y)));
         return new Fraction(optNumerator.flatMap(x -> optDenom.map(
+                    y -> Frac.of(x, y))));
+    }
+
+    Fraction sub(Fraction other) {
+        if (!(this.isValid() && other.isValid())) {
+            return new Fraction(Optional.<Frac>empty());
+        }
+
+        Optional<Num> optA = this.opt.map(x -> x.first());
+        Optional<Num> optB = this.opt.map(x -> x.second());
+        Optional<Num> optC = other.opt.map(x -> x.first());
+        Optional<Num> optD = other.opt.map(x -> x.second());
+
+        Optional<Num> optAD = optA.flatMap(x -> optD.map(y -> x.mul(y)));
+        Optional<Num> optBC = optB.flatMap(x -> optC.map(y -> x.mul(y)));
+        Optional<Num> optNumerator = optAD.flatMap(x -> optBC.map(y -> x.sub(y)));
+        Optional<Num> optDenom = optB.flatMap(x -> optD.map(y -> x.mul(y)));
+
+        Fraction ans =  new Fraction(optNumerator.flatMap(x -> optDenom.map(
                     y -> Frac.of(x, y))));
     }
 }
