@@ -70,4 +70,27 @@ class Fraction extends AbstractNum<Frac> {
                 }
             })));
     }
+
+    Fraction mul(Fraction other) {
+        if (!(this.isValid() && other.isValid())) {
+            return new Fraction(Optional.<Frac>empty());
+        }
+
+        Optional<Num> optA = this.opt.map(x -> x.first());
+        Optional<Num> optB = this.opt.map(x -> x.second());
+        Optional<Num> optC = other.opt.map(x -> x.first());
+        Optional<Num> optD = other.opt.map(x -> x.second());
+
+        Optional<Num> optNumerator = optA.flatMap(x -> optC.map(y -> x.mul(y)));
+        Optional<Num> optDenom = optB.flatMap(x -> optD.map(y -> x.mul(y)));
+
+        return new Fraction(optNumerator.flatMap(x -> optDenom.flatMap(
+            y -> {
+                if (x.isValid() && y.isValid()) {
+                    return Optional.of(Frac.of(x,y));
+                } else {
+                    return Optional.<Frac>empty();
+                }
+            })));
+    }
 }
