@@ -1,7 +1,6 @@
 import java.util.function.Supplier;
 
 class Base<T> implements Compute<T> {
-
     private final Supplier<T> supplier;
 
     Base(Supplier<T> supplier) {
@@ -13,7 +12,7 @@ class Base<T> implements Compute<T> {
     }
 
     public Compute<T> recurse() {
-        throw new IllegalStateException();
+        throw new IllegalStateException("Recursive calling a base case");
     }
 
     public T evaluate() {

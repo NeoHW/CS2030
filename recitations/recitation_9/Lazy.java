@@ -2,8 +2,8 @@ import java.util.function.Supplier;
 import java.util.function.Function;
 import java.util.Optional;
 
-class Lazy<T> implements Supplier<T> {
-    private final Supplier<T> supplier;
+class Lazy<T> {
+    private final Supplier<? extends T> supplier;
     private Optional<T> cache;
 
     private Lazy(Supplier<T> supplier) {
@@ -15,13 +15,6 @@ class Lazy<T> implements Supplier<T> {
         return new Lazy<T>(supplier);
     }
 
-    /**
-    static <T> Lazy<T> of(T t) {
-        return new Lazy<T>(() -> t);
-    }
-    */
-
-    @Override
     public T get() {
         // if you use orElse, it would be too eager an evaluation 
         // foo(bar(1)) : bar(1) has to be evaluated before getting passed into foo()
@@ -40,13 +33,13 @@ class Lazy<T> implements Supplier<T> {
         return Lazy.<R>of(() -> mapper.apply(this.get()).get());
     }
 
-    // equals method
+    // equals mwethod
     @Override
     public boolean equals(Object obj) { 
         if (this == obj) {
             return true;
         } else if (obj instanceof Lazy<?> other) {
-            return 
+            return this.get().equals(other.get());
         } else {
             return false;
         }

@@ -1,10 +1,9 @@
 import java.util.function.Supplier;
 
 class Recursive<T> implements Compute<T> {
+    private final Supplier<Compute<T>> supplier;
 
-    private final Supplier<? extends Recursive< ? extends T>> supplier;
-
-    Recursive(Supplier<? extends Recursive<? extends T>> supplier) {
+    Recursive(Supplier<Compute<T>> supplier) {
         this.supplier = supplier;
     }
     
@@ -13,10 +12,10 @@ class Recursive<T> implements Compute<T> {
     }
 
     public Compute<T> recurse() {
-        return new Recursive<T>(() -> supplier.get());
+        return this.supplier.get();
     }
 
     public T evaluate() {
-        throw new IllegalStateException();
+        throw new IllegalStateException("Evaluating a recursive case");
     }
 }
