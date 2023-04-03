@@ -21,14 +21,14 @@ class Main {
             .reduce("", (x, y) -> y + x);
     }
 
-    // task 3
+    // task 3 
     static long countRepeats(List<Integer> list) {
-        return list.stream()
-            .filter((x,y) -> x == y)
-            .distinct()
-            .peek(e -> System.out.println(e))
+        // general logic : check if in front num is same and behind num is diff
+        // and take into account when last num is same as 2nd last num
+        return IntStream.rangeClosed(1, list.size() - 1)
+            .filter(x -> (list.get(x) == list.get(x - 1)) && 
+                (x == list.size() - 1 || 
+                list.get(x) != list.get(x + 1)))
             .count();
     }
-
-
 }
