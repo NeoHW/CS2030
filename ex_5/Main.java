@@ -65,7 +65,12 @@ class Main {
     // list = operator.apply(list)
 
     static Stream<String> gameOfLife(List<Integer> list, UnaryOperator<List<Integer>> rule, int n) {
-        return Stream.<String>of("");
+        return Stream.iterate(list, rule) // using the iterate(T seed, UnaryOperator<T> f)
+            .limit(n)
+            .map(x -> 
+                x.stream()
+                .map(y -> (y == 0) ? "." : "x")
+                .reduce("", (a,b) -> a + b)); // to convert List<Integer> -> string
     }
 
 }
