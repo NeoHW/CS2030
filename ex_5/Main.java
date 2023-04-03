@@ -1,6 +1,5 @@
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
-import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -38,21 +37,35 @@ class Main {
     static UnaryOperator<List<Integer>> generateRule() {
         return new UnaryOperator<List<Integer>>() {
             public List<Integer> apply(List<Integer> list) {
-                return list.stream()
-                    .mapToInt(x -> x)
+                return IntStream.rangeClosed(0, list.size() - 1)
                     .map(x -> {
-                        if (x == 1) {
+                        if (list.get(x) == 1) {
                             return 0;
                         } else {
-                            return () ? 1 : 0;
+                            if (x == 0) {
+                                return list.get(x + 1) == 1 ? 1 : 0; 
+                            } else if (x == list.size() - 1) {
+                                return list.get(x - 1) == 1 ? 1 : 0;
+                            } else {
+                                return (list.get(x - 1) == 0 && list.get(x + 1) == 1)
+                                    || (list.get(x - 1) == 1 && list.get(x + 1) == 0)
+                                    ? 1 : 0;
+                            }
                         }
                     })
+                    .boxed()
                     .toList();
             }
         };
     }
+    
+    // Codes to run in jshell to check generateRule() : 
+    // List<Integer> list = List.of(0, 0, 0, 0, 1, 0, 0, 0, 0)
+    // UnaryOperator<List<Integer>> operator = Main.generateRule()
+    // list = operator.apply(list)
 
     static Stream<String> gameOfLife(List<Integer> list, UnaryOperator<List<Integer>> rule, int n) {
-
+        return Stream.<String>of("");
     }
+
 }
