@@ -1,6 +1,8 @@
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
+import java.io.UncheckedIOException;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 class Main {
 
@@ -30,5 +32,27 @@ class Main {
                 (x == list.size() - 1 || 
                 list.get(x) != list.get(x + 1)))
             .count();
+    }
+
+    // task 4
+    static UnaryOperator<List<Integer>> generateRule() {
+        return new UnaryOperator<List<Integer>>() {
+            public List<Integer> apply(List<Integer> list) {
+                return list.stream()
+                    .mapToInt(x -> x)
+                    .map(x -> {
+                        if (x == 1) {
+                            return 0;
+                        } else {
+                            return () ? 1 : 0;
+                        }
+                    })
+                    .toList();
+            }
+        };
+    }
+
+    static Stream<String> gameOfLife(List<Integer> list, UnaryOperator<List<Integer>> rule, int n) {
+
     }
 }
