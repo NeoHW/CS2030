@@ -11,6 +11,14 @@ import java.util.concurrent.CompletableFuture;
  */
 class Main {
 
+    static CompletableFuture<BusRoutes> processQuery(String query) {
+        Scanner sc = new Scanner(query);
+        BusStop srcBusStop = new BusStop(Integer.valueOf(sc.next()).toString());
+        String searchString = sc.next();
+        sc.close();
+        return BusSg.findBusServicesBetween(srcBusStop, searchString);
+    }
+
     public static void main(String[] args) {
         CompletableFuture<Void> cf1 = BusAPI.getBusStopsServedBy("95")
             .thenAccept(x -> System.out.println(x));
