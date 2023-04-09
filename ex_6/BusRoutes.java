@@ -1,5 +1,6 @@
 import java.util.Map;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Encapsulates the result of a query: for a bus stop and a search string,
@@ -13,7 +14,7 @@ import java.util.List;
 class BusRoutes {
     final BusStop stop;
     final String name;
-    final Map<BusService,List<BusStop>> services;
+    final Map<BusService,CompletableFuture<List<BusStop>>> services;
 
     /**
      * Constructor for creating a bus route.
@@ -21,7 +22,8 @@ class BusRoutes {
      * @param name The second bus stop.
      * @param services The list of/et bus services between the two stops.
      */
-    BusRoutes(BusStop stop, String name, Map<BusService,List<BusStop>> services) {
+    BusRoutes(BusStop stop, String name,
+        Map<BusService,CompletableFuture<List<BusStop>>> services) {
         this.stop = stop;
         this.name = name;
         this.services = services;
@@ -33,15 +35,18 @@ class BusRoutes {
      *     bus stop id and search string.  The remaining line contains 
      *     the bus services and matching stops served.
      */
-    public String description() {
+    public CompletableFuture<String> description() {
         String result = "Search for: " + this.stop + " <-> " + name + ":\n";
         result += "From " +  this.stop + "\n";
 
+        CompletableFuture<String> output = CompletableFuture.completedFuture(result);
+
         for (BusService service: services.keySet()) {
-            List<BusStop> stops = services.get(service);
-            result += describeService(service, stops);
+            output = output.thenCombine(services.get(service),
+                (str, stops) -> str + describeService(service, stops));
         }
-        return result;
+
+        return output; // result
     }
 
     /**

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * A BusSg class encapsulate the data related to the bus services and
@@ -19,18 +20,21 @@ class BusSg {
      * querying the web server.
      * @return A list of BusService that serve this bus stop.
      */
-    public static List<BusService> getBusServices(BusStop stop) {
-        Scanner sc = new Scanner(BusAPI.getBusServicesAt(stop.getStopId()));
-        List<BusService> busServices = sc
-            .useDelimiter("\n")
-            .tokens()
-            .skip(1) // skip first line
-            .flatMap(line -> Stream.of(line.split(",")))
-            .map(id -> new BusService(id))
-            .sorted()
-            .toList();
-        sc.close();
-        return busServices;
+    public static CompletableFuture<List<BusService>> getBusServices(BusStop stop) {
+        return BusAPI.getBusServicesAt(stop.getStopId())
+            .thenApply(str -> {
+                Scanner sc = new Scanner(str);
+                List<BusService> busServices = sc
+                    .useDelimiter("\n")
+                    .tokens()
+                    .skip(1) // skip first line
+                    .flatMap(line -> Stream.of(line.split(",")))
+                    .map(id -> new BusService(id))
+                    .sorted()
+                    .toList();
+                sc.close();
+                return busServices;
+            });
     }
 
     /**
@@ -40,18 +44,15 @@ class BusSg {
      * @param  searchString The (partial) name of other bus stops, assumed non-null.
      * @return The bus routes between the stops.
      */
-    public static BusRoutes findBusServicesBetween(BusStop stop, String searchString) {
-        try {
-            Map<BusService,List<BusStop>> validServices = getBusServices(stop)
-                .stream()
+    public static CompletableFuture<BusRoutes> findBusServicesBetween(BusStop stop,
+        String searchString) {
+        return getBusServices(stop) //CompletableFuture<List<BusService>>
+            .thenApply(list -> list.stream()
                 .collect(() -> 
-                    new LinkedHashMap<BusService,List<BusStop>>(), (map, service) -> 
-                    map.put(service, service.findStopsWith(searchString)),
-                    (map1,map2) -> map1.putAll(map2));
-            return new BusRoutes(stop, searchString, validServices);
-        } catch (CompletionException e) {
-            System.err.println("Unable to complete query: " + e);
-            return new BusRoutes(stop, searchString, Map.of());
-        }
+                    new LinkedHashMap<BusService,CompletableFuture<List<BusStop>>>(),
+                    (map, service) -> 
+                        map.put(service, service.findStopsWith(searchString)),
+                        (map1,map2) -> map1.putAll(map2)))
+            .thenApply(validServices -> new BusRoutes(stop, searchString, validServices));
     }
 }
