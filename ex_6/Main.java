@@ -1,5 +1,4 @@
 import java.time.Instant;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.time.Duration;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
@@ -33,12 +32,24 @@ class Main {
 
         Instant start = Instant.now();
         Scanner sc = new Scanner(System.in);
-        List<CompletableFuture<BusRoutes>> result = sc.useDelimiter("\n").tokens()
+        String tempResult = "";
+
+
+        List<CompletableFuture<BusRoutes>> busRoutes = sc.useDelimiter("\n").tokens()
             .map(s -> processQuery(s))
             .toList();
         
-        result.stream()
-            .forEach(x -> System.out.println(x.join().description().join()));
+        CompletableFuture<String> cfResult = CompletableFuture.completedFuture(tempResult);
+        
+        for (CompletableFuture<BusRoutes> cfbr : busRoutes) {
+            CompletableFuture<String> cfbrOutput = cfbr.thenCompose(x -> x.description());
+            cfResult = cfResult.thenCombine(cfbrOutput, (x, y) -> x + "\n" + y);
+        }
+
+        System.out.println(cfResult.join());
+        sc.close();
+        Instant stop = Instant.now();
+        System.out.printf("Took %, dms\n", Duration.between(start, stop).toMillis());
     }
     
 }
