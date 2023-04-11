@@ -49,7 +49,7 @@ class Main {
         System.out.println(cfResult.join());
         sc.close();
         Instant stop = Instant.now();
-        System.out.printf("Took %, dms\n", Duration.between(start, stop).toMillis());
+        System.out.printf("Took %,dms\n", Duration.between(start, stop).toMillis());
     }
     
 }
