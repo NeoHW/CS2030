@@ -2,7 +2,6 @@ import java.util.Optional;
 import java.util.function.BinaryOperator;
 
 class IntExpr extends AbstractIntExpr {
-    private static final double DOUBLE = 1.0;
     private static final Operator<Integer> subtraction =
         Operator.<Integer>of((x, y) -> x - y, 4);
     private static final Operator<Integer> division  =
@@ -47,6 +46,27 @@ class IntExpr extends AbstractIntExpr {
 
     IntExpr exp(int value) {
         return new IntExpr(super.op(exp, value));
+    }
+
+    // level 5
+    IntExpr add(IntExpr x) {
+        return new IntExpr(super.op(addition, x));
+    }
+
+    IntExpr mul(IntExpr x) {
+        return new IntExpr(super.op(multiplication, x));
+    }
+
+    IntExpr sub(IntExpr x) {
+        return new IntExpr(super.op(subtraction, x));
+    }
+
+    IntExpr div(IntExpr x) {
+        return new IntExpr(super.op(division, x));
+    }
+
+    IntExpr exp(IntExpr x) {
+        return new IntExpr(super.op(exp, x));
     }
     
     @Override
