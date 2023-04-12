@@ -2,6 +2,7 @@ import java.util.Optional;
 import java.util.function.BinaryOperator;
 
 class Operator<T> implements Comparable<Operator<T>> {
+    // usually put the whole class into Comparable to compare that object^
     private final int precValue;
     private final BinaryOperator<T> operator;
 
