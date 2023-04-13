@@ -34,6 +34,8 @@ class Main {
     }
 
     // task 4
+
+    /*
     static UnaryOperator<List<Integer>> generateRule() {
         return new UnaryOperator<List<Integer>>() {
             public List<Integer> apply(List<Integer> list) {
@@ -57,6 +59,29 @@ class Main {
                     .toList();
             }
         };
+    }
+    */
+
+    // using a lmabda as apply takes in a list and returns a list
+    static UnaryOperator<List<Integer>> generateRule() {
+        return list -> IntStream.rangeClosed(0, list.size() - 1)
+            .map(x -> {
+                if (list.get(x) == 1) {
+                    return 0;
+                } else {
+                    if (x == 0) {
+                        return list.get(x + 1) == 1 ? 1 : 0; 
+                    } else if (x == list.size() - 1) {
+                        return list.get(x - 1) == 1 ? 1 : 0;
+                    } else {
+                        return (list.get(x - 1) == 0 && list.get(x + 1) == 1)
+                            || (list.get(x - 1) == 1 && list.get(x + 1) == 0)
+                            ? 1 : 0;
+                    }
+                }
+            })
+            .boxed()
+            .toList();
     }
     
     // Codes to run in jshell to check generateRule() : 
