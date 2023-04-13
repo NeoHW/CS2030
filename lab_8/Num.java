@@ -30,7 +30,8 @@ class Num extends AbstractNum<Integer> {
     }
 
     static Num one() {
-        return new Num(AbstractNum.zero().opt.map(x -> s.apply(x)));
+        // return new Num(AbstractNum.zero().opt.map(x -> s.apply(x)));
+        return Num.zero().succ();
     }
 
     Num succ() {
