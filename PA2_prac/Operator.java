@@ -10,9 +10,11 @@ class Operator<T> implements Comparable<Operator<T>> {
         this.operator = operator;
     }
 
+    /* 
     int getPrecValue() {
         return this.precValue;
     }
+    */
 
     static <T> Operator<T> of(BinaryOperator<T> operator, int precValue) {
         return new Operator<T>(operator, precValue);
@@ -24,11 +26,13 @@ class Operator<T> implements Comparable<Operator<T>> {
 
     @Override
     public int compareTo(Operator<T> other) {
-        if (this.precValue == other.getPrecValue()) {
+        /* if (this.precValue == other.getPrecValue()) {
             return 0;
         } else {
             return this.precValue > other.getPrecValue() ? 1 : -1;
         }
+        */
+        return this.precValue - other.precValue;
     }
 
     @Override
