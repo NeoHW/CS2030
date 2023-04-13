@@ -10,8 +10,8 @@ class Maybe<T> {
         this.value = value;
     }
 
-    static <U> Maybe<U> of(U value) {
-        return new Maybe<U>(value);
+    static <T> Maybe<T> of(T value) {
+        return new Maybe<T>(value);
     }
 
     static <T> Maybe<T> empty() {
