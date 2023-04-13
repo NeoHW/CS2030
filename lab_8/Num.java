@@ -115,9 +115,15 @@ class Num extends AbstractNum<Integer> {
 
         // loop implementation
         Num temp = other;
+
+        // this : 3, other : 6
+        // check whether 3 is a factor of 6
+        // while (temp > 0)
+            // temp = temp - this
         while (temp.isValid() && !temp.equals(Num.zero())) {
             temp = temp.sub(this);
         }
+        // 3 is a factor of 6 is my final temp is == 0
         return temp.equals(Num.zero());
     }
 
@@ -133,6 +139,14 @@ class Num extends AbstractNum<Integer> {
             .map(x -> x.succ())
             .reduce(Num.one(), \* redundant *\ (x,y) -> y);
         */
+
+        // 8 / 2
+        // result = 1
+        // 1 * 2  ==> 2
+        // 2 * 2 ==> 4
+        // ...
+        // 4 * 2 ==> 8
+        // result = 4
 
         // loop implementation
         Num result = Num.one();
