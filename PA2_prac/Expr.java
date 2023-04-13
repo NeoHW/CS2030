@@ -1,5 +1,4 @@
 import java.util.Optional;
-import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
 
 class Expr<T> {

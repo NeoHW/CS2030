@@ -1,6 +1,3 @@
-import java.util.Optional;
-import java.util.function.BinaryOperator;
-
 class IntExpr extends AbstractIntExpr {
     private static final Operator<Integer> subtraction =
         Operator.<Integer>of((x, y) -> x - y, 4);

@@ -1,4 +1,3 @@
-import java.util.Optional;
 import java.util.function.BinaryOperator;
 
 class Operator<T> implements Comparable<Operator<T>> {
