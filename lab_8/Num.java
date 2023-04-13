@@ -1,4 +1,5 @@
 import java.util.Optional;
+import java.util.stream.Stream;
 
 class Num extends AbstractNum<Integer> {
     
@@ -37,6 +38,10 @@ class Num extends AbstractNum<Integer> {
     }
 
     // calling succ repeatedly
+    /* stream implementation: 
+        return Stream.iterate(Num.zero(), x -> !x.equals(other). x -> x.succ())
+            .reduce(this, (x,y) -> x.succ())
+     */
     Num add(Num other) {
         if (!(this.isValid() && other.isValid())) {
             return new Num(Optional.<Integer>empty());
@@ -76,4 +81,65 @@ class Num extends AbstractNum<Integer> {
         return new Num(initial.opt.filter(x -> valid.test(x)));
     }
 
+    // for level 6
+    Num gcd(Num other) {
+        if (this.equals(Num.zero()) || other.equals(Num.zero())) {
+            return Num.one();
+        }
+
+        /*  Stream implementation
+        return Stream.iterate(Num.one(), x -> !x.equals(this) && !x.equals(other), x -> x.succ())
+            .map(x -> x.succ())
+            .reduce(Num.one(), (x, y) -> y.divides(this) && y.divides(other) ? y : x);
+        */
+
+        // loop implementation
+        Num result = Num.one();
+        Num current = Num.one();
+
+        while (!current.equals(this) && !current.equals(other)) {
+            current = current.succ();
+
+            if (current.divides(this) && current.divides(other)) {
+                result = current;
+            }
+        }
+        return result;
+    }
+
+    boolean divides(Num other) {
+        /*  stream implementation
+        return Stream.iterate(other, x -> x.isValid() && !x.equals(Num.zero()), x -> x.sub(this))
+            .anyMatch(x -> x.sub(this).equals(Num.zero()));
+        */
+
+        // loop implementation
+        Num temp = other;
+        while (temp.isValid() && !temp.equals(Num.zero())) {
+            temp = temp.sub(this);
+        }
+        return temp.equals(Num.zero());
+    }
+
+    // Returns this divided by other
+    // Assumes that other is a divisor of this
+    Num div(Num other) {
+        if (!(this.isValid() && other.isValid())) {
+            return new Num(Optional.<Integer>empty());
+        }
+
+        /*  stream implementation
+        return Stream.iterate(Num.one(), x -> !x.mul(other).equals(this), x -> x.succ())
+            .map(x -> x.succ())
+            .reduce(Num.one(), \* redundant *\ (x,y) -> y);
+        */
+
+        // loop implementation
+        Num result = Num.one();
+        while (!result.mul(other).equals(this)) {
+            result = result.succ();
+        }
+
+        return result;
+    }
 }

@@ -92,4 +92,15 @@ class Fraction extends AbstractNum<Frac> {
                 }
             })));
     }
+
+    // a/b ==>
+    // c ==> gcd(a,b); gcd is greatest common divisor
+    Fraction reduce()  {
+        return new Fraction(this.opt.flatMap(x -> {
+            Num n = x.first();
+            Num d = x.second();
+            Num gcd = n.gcd(d);
+            return Optional.<Frac>of(Frac.of(n.div(gcd), d.div(gcd)));
+        }));
+    }
 }
