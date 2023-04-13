@@ -64,6 +64,7 @@ class Main {
     // UnaryOperator<List<Integer>> operator = Main.generateRule()
     // list = operator.apply(list)
 
+    // level 5
     static Stream<String> gameOfLife(List<Integer> list, UnaryOperator<List<Integer>> rule, int n) {
         return Stream.iterate(list, rule) // using the iterate(T seed, UnaryOperator<T> f)
             .limit(n)
