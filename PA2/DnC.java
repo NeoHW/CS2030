@@ -24,6 +24,13 @@ class DnC<T,R> {
         this.breakdown = Optional.<Function<T, Pair<T,T>>>of(breakdown);
     }
 
+    protected DnC(Optional<T> prob, Predicate<T> pred, Function<T,R> soln, Optional<Function<T,Pair<T,T>>> breakdown) {
+        this.problem = () -> prob;
+        this.pred = pred;
+        this.soln = soln;
+        this.breakdown = breakdown;
+    }
+
     static <T,R> DnC<T,R> of(T prob, Predicate<T> pred, Function<T,R> soln) {
         return new DnC<T,R>(() -> prob, pred, soln);
     }
@@ -49,19 +56,28 @@ class DnC<T,R> {
         return problem.get().filter(pred).map(soln);
     }
 
-    /* 
     DnC<T,R> left() {
+        Optional<T> temp = problem
+            .get()
+            .flatMap(x -> breakdown.map(y -> y.apply(x).first()));
+        
+        return new DnC<T,R>(temp, pred, soln, breakdown);
+        /* 
         return DnC.<T,R>of(problem.map(breakdown.get()).get().first()
                 .orElse(problem)
                 , pred, soln, breakdown);
+        */
     }
 
+    /* 
     DnC<T,R> right() {
         return DnC.<T,R>of(problem.map(breakdown.get()).second()
                 .orElse(problem)
                 , pred, soln, breakdown);
     }
+    */
 
+    /*
     // level 4
     Optional<R> solve(BinaryOperator<R> op) {
         return problem.filter(pred).map(soln);
