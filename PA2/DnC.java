@@ -2,6 +2,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 class DnC<T,R> {
     private final Supplier<Optional<T>> problem;
@@ -10,7 +11,7 @@ class DnC<T,R> {
     private final Optional<Function<T,Pair<T,T>>> breakdown;
 
     protected DnC(Supplier<T> prob, Predicate<T> pred, Function<T,R> soln) {
-        this.problem = prob.get().map(x -> (() -> Optional.<T>of(x)));
+        this.problem = () -> Optional.of(prob.get());
         this.pred = pred;
         this.soln = soln;
         this.breakdown = Optional.empty();
@@ -24,7 +25,7 @@ class DnC<T,R> {
     }
 
     static <T,R> DnC<T,R> of(T prob, Predicate<T> pred, Function<T,R> soln) {
-        return new DnC<T,R>(prob, pred, soln);
+        return new DnC<T,R>(() -> prob, pred, soln);
     }
 
     // level 3 overloaded of operator
@@ -33,9 +34,11 @@ class DnC<T,R> {
     }
 
     // level 5 overloaded of operator
+    /* 
     static <T,R> DnC<T,R> of(Supplier<T> prob, Predicate<T> pred, Function<T,R> soln, Function<T,Pair<T,T>> breakdown) {
         return new DnC<T,R>(prob, pred, soln, breakdown);
     }
+    */
 
     // this will be like toString()
     void peek(Consumer<T> action) {
@@ -46,6 +49,7 @@ class DnC<T,R> {
         return problem.get().filter(pred).map(soln);
     }
 
+    /* 
     DnC<T,R> left() {
         return DnC.<T,R>of(problem.map(breakdown.get()).get().first()
                 .orElse(problem)
@@ -59,8 +63,8 @@ class DnC<T,R> {
     }
 
     // level 4
-    Optional<R> solve(BinaryOperator<R>) {
+    Optional<R> solve(BinaryOperator<R> op) {
         return problem.filter(pred).map(soln);
     }
-
+    */
 }
