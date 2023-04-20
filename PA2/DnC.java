@@ -11,14 +11,14 @@ class DnC<T,R> {
     private final Function<T,R> soln; // only applies for atomic problems
     private final Optional<Function<T, Pair<Supplier<T>, Supplier<T>>>> breakdown;
 
-    protected DnC(Supplier<T> prob, Predicate<T> pred, Function<T,R> soln) {
+    DnC(Supplier<T> prob, Predicate<T> pred, Function<T,R> soln) {
         this.problem = prob;
         this.pred = pred;
         this.soln = soln;
         this.breakdown = Optional.empty();
     }
 
-    protected DnC(Supplier<T> prob, Predicate<T> pred, Function<T,R> soln, Optional<Function<T, Pair<Supplier<T>, Supplier<T>>>> breakdown) {
+    DnC(Supplier<T> prob, Predicate<T> pred, Function<T,R> soln, Optional<Function<T, Pair<Supplier<T>, Supplier<T>>>> breakdown) {
         this.problem = prob;
         this.pred = pred;
         this.soln = soln;
@@ -29,21 +29,13 @@ class DnC<T,R> {
         return new DnC<T,R>(() -> prob, pred, soln);
     }
 
-    // level 3 overloaded of operator
     static <T,R> DnC<T,R> of(T prob, Predicate<T> pred, Function<T,R> soln, Function<T,Pair<T,T>> breakdown) {
         return new DnC<T,R>(() -> prob, pred, soln, Optional.of(breakdown.andThen(pair -> Pair.of(() -> pair.first(), () -> pair.second()))));
     }
 
-    static <T,R> DnC<T,R> of(Supplier<T> prob, Predicate<T> pred, Function<T,R> soln, Function<T,Pair<T,T>> breakdown, Function<T, Pair<Supplier<T>, Supplier<T>>> divider) {
-        return new DnC<T,R>(prob, pred, soln, Optional.of(divider));
+    static <T,R> DnC<T,R> of(Supplier<T> prob, Predicate<T> pred, Function<T,R> soln, Function<T,Pair<Supplier<T>,Supplier<T>>> breakdown) {
+        return new DnC<T,R>(prob, pred, soln, Optional.of(breakdown));
     }
-
-    // level 5 overloaded of operator
-    /* 
-    static <T,R> DnC<T,R> of(Supplier<T> prob, Predicate<T> pred, Function<T,R> soln, Function<T,Pair<T,T>> breakdown) {
-        return new DnC<T,R>(prob, pred, soln, breakdown);
-    }
-    */
 
     // this will be like toString()
     void peek(Consumer<T> action) {
